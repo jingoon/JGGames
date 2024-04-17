@@ -30,19 +30,24 @@ public class KeyHandler implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
+		upPress = false;
+		downPress = false;
+		leftPress = false;
+		rigthPress = false;
 		
-		if(Utill.linerSearch(code, UP)) {
-			upPress = false;
-		}
-		if(Utill.linerSearch(code, DOWN)) {
-			downPress = false;
-		}
-		if(Utill.linerSearch(code, LEFT)) {
-			leftPress = false;
-		}
-		if(Utill.linerSearch(code, RIGHT)) {
-			rigthPress = false;
-		}
+//	무슨차이?		
+//		if(Utill.linerSearch(code, UP)) {
+//			upPress = false;
+//		}
+//		if(Utill.linerSearch(code, DOWN)) {
+//			downPress = false;
+//		}
+//		if(Utill.linerSearch(code, LEFT)) {
+//			leftPress = false;
+//		}
+//		if(Utill.linerSearch(code, RIGHT)) {
+//			rigthPress = false;
+//		}
 		
 	}
 	

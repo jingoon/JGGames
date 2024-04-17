@@ -27,10 +27,10 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	Thread gameThread;
 	
-	// 케릭터 세팅
-	int positionX = 100;
-	int positionY = 100;
-	int move = 5;
+	// Set player's default position
+	int playerX = 100;
+	int playerY = 100;
+	int playerSpeed = 5;	// 한번에 움직일 픽셀
 	
 	// 화면 갱신
 	int FPS = 60;
@@ -41,7 +41,9 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
 		
-		// key
+		this.setName("name");
+		
+		// keyboard press
 		this.addKeyListener(keyH);
 		this.setFocusable(true); // with this, this GamePanel can be "focused" to receive key input
 		
@@ -49,70 +51,117 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void startGameThread() {
 		gameThread = new Thread(this);
-		gameThread.start();
+		gameThread.start();	// call run()
 		
 	}
-	
+/*	
 	@Override
 	public void run() {
 		
-		long aTime;
-		long bTime;
-		long oneFrame = 1/FPS;
-		long sleepTime;
+		double aTime = System.nanoTime();
+		double bTime;
+		double cTime;
+		double oneFrame = 1000000000/FPS; // 0.0166666666... seconds
+		double sleepTime;
 		
 		// game loof;	
 		while(gameThread != null) {
-			
-			//aTime = System.currentTimeMillis();
-			aTime = System.nanoTime();
 			
 			// position update
 			update();
 			// draw 화면 정보 
 			repaint();
-			//bTime = System.currentTimeMillis();
-			bTime = System.nanoTime();
-			
-			sleepTime = oneFrame - (bTime - aTime);
-			
-			sleepTime = sleepTime*1000000;
-			System.out.println("aTime: "+aTime);
-			System.out.println("bTime: "+bTime);
-			System.out.println("oneFrame: "+oneFrame);
-			System.out.println("sleepTime: "+sleepTime);
-			if(sleepTime<=0) {
-				sleepTime =0;
-			}
 			
 			try {
-				gameThread.sleep(sleepTime);
+				// 1 loof = 1 fps = (update, repain) Time + sleepTime  
+				bTime = System.nanoTime();
+				
+				sleepTime = oneFrame - (bTime - aTime);
+				
+				if(sleepTime<=0) {
+					sleepTime =0;
+				}
+				
+				Thread.sleep((long)sleepTime/1000000);	// System.nanoTime() -> System.currentTimeMillis() 변환
+
+				System.out.println("sleepTime = oneFrame - (bTime - aTime): "+sleepTime +" = "+ oneFrame + - (bTime - aTime));
+				System.out.println("FPS = "+ 1000000000/sleepTime+(bTime - aTime));
+				
+				aTime = System.nanoTime();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+*/
+	@Override
+	public void run() {
+		double drawInterver = 1000000000/FPS; // nanoTime일때 : 초(s)/FPS
+		double delta = 0;
+		long lastTime = System.nanoTime();
+		long currentTime;
+		long timer = 0;
+		int drawCount = 0;
+		
+		while (gameThread != null) {
+			currentTime = System.nanoTime();
+			
+			delta += (currentTime - lastTime) / drawInterver; // 경과시간을 drawInterver로 나눈후 누적. 최종 1이상 될때 update하기 위함
+			timer += (currentTime - lastTime); // 경과시간을 누적
+			lastTime = currentTime;
+			
+			
+			if(delta >= 1) {
+				update();
+				repaint();
+				delta --;
+				drawCount++;
+			}
+			
+			if(timer >= 1000000000) {	// 1초 이상이 되었을 때 update횟수를 체크 
+				System.out.println("FPS: "+drawCount);
+				drawCount = 0;
+				timer = 0;
+			}
+			
 			
 		}
-		
 	}
+	
 	
 	// 1 update : 위치 업데이트
 	public void update() {
+		// 상하좌우 이동
 		if(keyH.upPress) {
-			positionY -= move; // 좌상단 좌표 (0,0)
+			playerY -= playerSpeed; // 좌상단 좌표 (0,0)
 		}
 		if(keyH.downPress) {
-			positionY += move;
+			playerY += playerSpeed;
 		}
 		if(keyH.leftPress) {
-			positionX -= move;
+			playerX -= playerSpeed;
 		}
 		if(keyH.rigthPress) {
-			positionX += move;
+			playerX += playerSpeed;
 		}
+		
+		// 창 벗어나지 않기
+		if(playerX <0) {
+			playerX =0;
+		}else if(playerX > screenWidth - tileSize){
+			playerX = screenWidth - tileSize;
+		}
+		if(playerY <0) {
+			playerY =0;
+		}else if(playerY > screenHeight - tileSize){
+			playerY = screenHeight - tileSize;
+		}
+		
+		
 	}
 	
-	// 2 draw : 화면 정보 repaint()
+	// 2 draw : 화면 정보 갱신 repaint()
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
@@ -120,7 +169,7 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		
 		g2.setColor(Color.white);
-		g2.fillRect(positionX, positionY, tileSize, tileSize);
+		g2.fillRect(playerX, playerY, tileSize, tileSize);
 		g2.dispose();
 				
 	}
