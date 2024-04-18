@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import entity.Player;
+
 public class GamePanel extends JPanel implements Runnable{
 	
 	// 화면 세팅
@@ -14,26 +16,31 @@ public class GamePanel extends JPanel implements Runnable{
 	final int scale = 3;
 	
 	// 기준 타일 크기
-	final int tileSize = orihinalTileSize * scale ; // 48x48 tile
+	public final int tileSize = orihinalTileSize * scale ; // 48x48 tile
 	
 	// 스크린 크기
 	final int maxScreenCol = 16;
 	final int maxScreenRow = 12;
-	final int screenWidth = tileSize * maxScreenCol;
-	final int screenHeight = tileSize * maxScreenRow;
+	public final int screenWidth = tileSize * maxScreenCol;
+	public final int screenHeight = tileSize * maxScreenRow;
 	
 	// keyPress
 	KeyHandler keyH = new KeyHandler();
 	
+	// player
+	Player player = new Player(this, keyH);
+	
+	// Thread
 	Thread gameThread;
+	
+	// 화면 갱신
+	int FPS = 60;
 	
 	// Set player's default position
 	int playerX = 100;
 	int playerY = 100;
 	int playerSpeed = 5;	// 한번에 움직일 픽셀
 	
-	// 화면 갱신
-	int FPS = 60;
 	
 	public GamePanel() {
 		
@@ -54,47 +61,7 @@ public class GamePanel extends JPanel implements Runnable{
 		gameThread.start();	// call run()
 		
 	}
-/*	
-	@Override
-	public void run() {
-		
-		double aTime = System.nanoTime();
-		double bTime;
-		double cTime;
-		double oneFrame = 1000000000/FPS; // 0.0166666666... seconds
-		double sleepTime;
-		
-		// game loof;	
-		while(gameThread != null) {
-			
-			// position update
-			update();
-			// draw 화면 정보 
-			repaint();
-			
-			try {
-				// 1 loof = 1 fps = (update, repain) Time + sleepTime  
-				bTime = System.nanoTime();
-				
-				sleepTime = oneFrame - (bTime - aTime);
-				
-				if(sleepTime<=0) {
-					sleepTime =0;
-				}
-				
-				Thread.sleep((long)sleepTime/1000000);	// System.nanoTime() -> System.currentTimeMillis() 변환
 
-				System.out.println("sleepTime = oneFrame - (bTime - aTime): "+sleepTime +" = "+ oneFrame + - (bTime - aTime));
-				System.out.println("FPS = "+ 1000000000/sleepTime+(bTime - aTime));
-				
-				aTime = System.nanoTime();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-*/
 	@Override
 	public void run() {
 		double drawInterver = 1000000000/FPS; // nanoTime일때 : 초(s)/FPS
@@ -132,33 +99,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// 1 update : 위치 업데이트
 	public void update() {
-		// 상하좌우 이동
-		if(keyH.upPress) {
-			playerY -= playerSpeed; // 좌상단 좌표 (0,0)
-		}
-		if(keyH.downPress) {
-			playerY += playerSpeed;
-		}
-		if(keyH.leftPress) {
-			playerX -= playerSpeed;
-		}
-		if(keyH.rigthPress) {
-			playerX += playerSpeed;
-		}
-		
-		// 창 벗어나지 않기
-		if(playerX <0) {
-			playerX =0;
-		}else if(playerX > screenWidth - tileSize){
-			playerX = screenWidth - tileSize;
-		}
-		if(playerY <0) {
-			playerY =0;
-		}else if(playerY > screenHeight - tileSize){
-			playerY = screenHeight - tileSize;
-		}
-		
-		
+		player.update();
 	}
 	
 	// 2 draw : 화면 정보 갱신 repaint()
@@ -168,8 +109,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		g2.setColor(Color.white);
-		g2.fillRect(playerX, playerY, tileSize, tileSize);
+		player.draw(g2);
 		g2.dispose();
 				
 	}

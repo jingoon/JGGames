@@ -10,7 +10,7 @@ public class KeyHandler implements KeyListener{
 	final int LEFT[] = {KeyEvent.VK_A, KeyEvent.VK_LEFT};
 	final int RIGHT[] = {KeyEvent.VK_D, KeyEvent.VK_RIGHT};
 	
-	boolean upPress, downPress, leftPress, rigthPress;
+	public boolean upPress, downPress, leftPress, rigthPress;
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -30,24 +30,19 @@ public class KeyHandler implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
-		upPress = false;
-		downPress = false;
-		leftPress = false;
-		rigthPress = false;
 		
-//	무슨차이?		
-//		if(Utill.linerSearch(code, UP)) {
-//			upPress = false;
-//		}
-//		if(Utill.linerSearch(code, DOWN)) {
-//			downPress = false;
-//		}
-//		if(Utill.linerSearch(code, LEFT)) {
-//			leftPress = false;
-//		}
-//		if(Utill.linerSearch(code, RIGHT)) {
-//			rigthPress = false;
-//		}
+		if(Utill.linerSearch(code, UP)) {
+			upPress = false;
+		}
+		if(Utill.linerSearch(code, DOWN)) {
+			downPress = false;
+		}
+		if(Utill.linerSearch(code, LEFT)) {
+			leftPress = false;
+		}
+		if(Utill.linerSearch(code, RIGHT)) {
+			rigthPress = false;
+		}
 		
 	}
 	
