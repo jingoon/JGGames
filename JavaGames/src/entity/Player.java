@@ -1,15 +1,14 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.Utill;
 
 public class Player extends Entity{
 
@@ -29,19 +28,20 @@ public class Player extends Entity{
 		y = 100;
 		speed = 4;
 		direction = "up";
+		imageChangeSpeed = 12;
 
 	}
 	
 	public void getPlayerImage() {
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/down_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/right_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/left_2.png"));
+			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
+			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
+			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
+			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
+			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
+			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
+			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
+			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,35 +67,36 @@ public class Player extends Entity{
 			direction = "right";
 		}
 		
-		// 창 벗어나지 않기
-		if(x <0) {
-			x =0;
-		}else if(x > gp.screenWidth - gp.tileSize){
-			x = gp.screenWidth - gp.tileSize;
-		}
-		if(y <0) {
-			y =0;
-		}else if(y > gp.screenHeight - gp.tileSize){
-			y = gp.screenHeight - gp.tileSize;
-		}
 		
 		// img 변수
-		spriterCount++;
-		if(spriterCount>12) {
-			if(imageNumber == 1) {
-				imageNumber = 2;
-			}else if(imageNumber == 2) {
-				imageNumber = 1;
+		if(Utill.moveKeyPress(keyH)) {
+			spriterCount++;
+			if(spriterCount>=imageChangeSpeed) {
+				if(imageNumber == 1) {
+					imageNumber = 2;
+				}else if(imageNumber == 2) {
+					imageNumber = 1;
+				}
+				spriterCount = 0;
 			}
-			spriterCount = 0;
 		}
 		
+		// 창 벗어나지 않기
+//		if(x <0) {
+//			x =0;
+//		}else if(x > gp.screenWidth - gp.tileSize){
+//			x = gp.screenWidth - gp.tileSize;
+//		}
+//		if(y <0) {
+//			y =0;
+//		}else if(y > gp.screenHeight - gp.tileSize){
+//			y = gp.screenHeight - gp.tileSize;
+//		}
 		
 	}
 	
 	public void draw(Graphics2D g2) {
-//		g2.setColor(Color.white);
-//		g2.fillRect(x, y, gp.tileSize, gp.tileSize);
+
 		BufferedImage image = null;
 		
 		switch (direction) {

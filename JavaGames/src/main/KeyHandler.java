@@ -19,7 +19,7 @@ public class KeyHandler implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-		
+
 		upPress = Utill.linerSearch(code, UP);
 		downPress = Utill.linerSearch(code, DOWN);
 		leftPress = Utill.linerSearch(code, LEFT);
@@ -45,6 +45,7 @@ public class KeyHandler implements KeyListener{
 		}
 		
 	}
+	
 	
 
 }

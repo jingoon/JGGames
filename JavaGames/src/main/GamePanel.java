@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -19,13 +20,16 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int tileSize = orihinalTileSize * scale ; // 48x48 tile
 	
 	// 스크린 크기
-	final int maxScreenCol = 16;
-	final int maxScreenRow = 12;
+	public final int maxScreenCol = 16;
+	public final int maxScreenRow = 12;
 	public final int screenWidth = tileSize * maxScreenCol;
 	public final int screenHeight = tileSize * maxScreenRow;
 	
 	// keyPress
 	KeyHandler keyH = new KeyHandler();
+	
+	// TileManager
+	TileManager tileM = new TileManager(this);
 	
 	// player
 	Player player = new Player(this, keyH);
@@ -35,13 +39,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// 화면 갱신
 	int FPS = 60;
-	
-	// Set player's default position
-	int playerX = 100;
-	int playerY = 100;
-	int playerSpeed = 5;	// 한번에 움직일 픽셀
-	
-	
+		
 	public GamePanel() {
 		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -87,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 			
 			if(timer >= 1000000000) {	// 1초 이상이 되었을 때 update횟수를 체크 
-				System.out.println("FPS: "+drawCount);
+				//System.out.println("FPS: "+drawCount);
 				drawCount = 0;
 				timer = 0;
 			}
@@ -109,7 +107,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		player.draw(g2);
+		tileM.draw(g2);		// 타일 드로우
+		player.draw(g2);	// 케릭터 드로우
 		g2.dispose();
 				
 	}
