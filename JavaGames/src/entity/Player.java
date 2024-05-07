@@ -15,17 +15,24 @@ public class Player extends Entity{
 	GamePanel gp;
 	KeyHandler keyH;
 	
+	public final int screenX, screenY;	// 스크린에서 케릭터 위치
+	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
 		this.keyH = keyH;
+		
+		screenX = gp.screenWidth/2 - (gp.tileSize/2);		//화면 가로 가운데
+		screenY = gp.screenHeight/2 - (gp.tileSize/2);	//화면 세로 가운데 
+		
 		setDefaultValues();
 		getPlayerImage();
 	}
 	
 	public void setDefaultValues() {
 		
-		x = 100;
-		y = 100;
+		worldX = gp.worldWidth/2;	//world map 가로 가운데
+		worldY = gp.worldHeight/2;	//world map 세로 가운데 
+		
 		speed = 4;
 		direction = "up";
 		imageChangeSpeed = 12;
@@ -51,19 +58,19 @@ public class Player extends Entity{
 	public void update() {
 		// 상하좌우 이동
 		if(keyH.upPress) {
-			y -= speed; // 좌상단 좌표 (0,0)
+			worldY -= speed; // 좌상단 좌표 (0,0)
 			direction = "up";			
 		}
 		if(keyH.downPress) {
-			y += speed;
+			worldY += speed;
 			direction = "down";			
 		}
 		if(keyH.leftPress) {
-			x -= speed;
+			worldX -= speed;
 			direction = "left";
 		}
 		if(keyH.rigthPress) {
-			x += speed;
+			worldX += speed;
 			direction = "right";
 		}
 		
@@ -80,19 +87,7 @@ public class Player extends Entity{
 				spriterCount = 0;
 			}
 		}
-		
-		// 창 벗어나지 않기
-//		if(x <0) {
-//			x =0;
-//		}else if(x > gp.screenWidth - gp.tileSize){
-//			x = gp.screenWidth - gp.tileSize;
-//		}
-//		if(y <0) {
-//			y =0;
-//		}else if(y > gp.screenHeight - gp.tileSize){
-//			y = gp.screenHeight - gp.tileSize;
-//		}
-		
+				
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -130,7 +125,7 @@ public class Player extends Entity{
 			break;
 		}
 		
-		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 		
 		
 	}

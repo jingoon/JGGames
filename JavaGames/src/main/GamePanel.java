@@ -13,29 +13,33 @@ import tile.TileManager;
 public class GamePanel extends JPanel implements Runnable{
 	
 	// 화면 세팅
-	final int orihinalTileSize = 16; // 16x16 tile
+	final int originalTileSize = 16; // 16x16 tile
 	final int scale = 3;
 	
 	// 기준 타일 크기
-	public final int tileSize = orihinalTileSize * scale ; // 48x48 tile
+	public final int tileSize = originalTileSize * scale ; // 48x48 tile
 	
 	// 스크린 크기
-	public final int maxScreenCol = 16;
-	public final int maxScreenRow = 12;
-	public final int screenWidth = tileSize * maxScreenCol;
+	public final int maxScreenCol = 16; // tile 갯수
+	public final int maxScreenRow = 12; 
+	public final int screenWidth = tileSize * maxScreenCol; // tile 갯수 * tile 사이즈
 	public final int screenHeight = tileSize * maxScreenRow;
 	
-	// keyPress
-	KeyHandler keyH = new KeyHandler();
+	// WORLD SET
+	public final int maxWorldCol = 50;	// tile 갯수
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;	// tile 갯수 * tile 사이즈
+	public final int worldHeight = tileSize * maxWorldRow;
 	
 	// TileManager
 	TileManager tileM = new TileManager(this);
-	
-	// player
-	Player player = new Player(this, keyH);
-	
+	// keyPress
+	KeyHandler keyH = new KeyHandler();
 	// Thread
 	Thread gameThread;
+	// player
+	public Player player = new Player(this, keyH);
+	
 	
 	// 화면 갱신
 	int FPS = 60;

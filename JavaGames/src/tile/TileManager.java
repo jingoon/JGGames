@@ -20,10 +20,10 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		
 		this.gp = gp;
-		tile = new Tile[10];	// 타일 종류 가짓수
-		mapTileNumber = new int[gp.maxScreenCol][gp.maxScreenRow];
+		tile = new Tile[10];	// 타일번호
+		mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];	// 지도타일 배열
 		getTileImage();
-		loadMap("/maps/testMap.txt");
+		loadMap("/maps/world01.txt");
 	}
 	
 	// mapTileNumber[][] 세팅
@@ -35,16 +35,17 @@ public class TileManager {
 			BufferedReader br = new BufferedReader(r);
 			int col = 0;
 			int row = 0;
-			while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
+			
+			while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
 				String line = br.readLine();
 				String number[] = line.split(" ");
 				
-				while(col < gp.maxScreenCol) {
+				while(col < gp.maxWorldCol) {
 					int num = Integer.parseInt(number[col]);
 					mapTileNumber[col][row] = num;
 					col++;
 				}
-				if(col == gp.maxScreenCol) {
+				if(col == gp.maxWorldCol) {
 					row++;
 					col=0;
 				}
@@ -72,6 +73,12 @@ public class TileManager {
 			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
 			tile[2] = new Tile();	// 물
 			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
+			tile[3] = new Tile();	// 땅
+			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
+			tile[4] = new Tile();	// 나무
+			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
+			tile[5] = new Tile();	// 모래
+			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
 		
 		
 		} catch (IOException e) {
@@ -90,13 +97,16 @@ public class TileManager {
 		//mapTileNumber[][]
 		int col = 0;
 		int row = 0;
-		while(gp.maxScreenCol > col && gp.maxScreenRow > row) {
+		while(col < gp.maxWorldCol && row < gp.maxWorldRow 
+				&& 
+			col < gp.worldHeight -gp.screenHeight && row < gp.worldWidth - gp.screenWidth
+				) {
 			
 			int tileNum = mapTileNumber[col][row];
 			
 			g2.drawImage(tile[tileNum].image, gp.tileSize*col, gp.tileSize*row, gp.tileSize, gp.tileSize, null);
 			col++;
-			if(gp.maxScreenCol == col) {
+			if(gp.maxWorldCol == col) {
 				col=0;
 				row++;
 			}
