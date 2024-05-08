@@ -124,8 +124,6 @@ public class TileManager {
 					
 			}
 			
-			
-			
 			worldCol++;
 			if(gp.maxWorldCol == worldCol) {
 				worldCol=0;
