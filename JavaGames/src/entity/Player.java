@@ -22,19 +22,19 @@ public class Player extends Entity{
 		this.keyH = keyH;
 		
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);		//화면 가로 가운데
-		screenY = gp.screenHeight/2 - (gp.tileSize/2);	//화면 세로 가운데 
-		
+		screenY = gp.screenHeight/2 - (gp.tileSize/2);		//화면 세로 가운데 
+				
 		setDefaultValues();
 		getPlayerImage();
 	}
 	
 	public void setDefaultValues() {
-		
-		worldX = gp.worldWidth/2;	//world map 가로 가운데
-		worldY = gp.worldHeight/2;	//world map 세로 가운데 
-		
+		//스타팅 포인트(worldMap)
+		worldX = gp.worldWidth/2 - gp.tileSize*2;		
+		worldY = gp.worldHeight/2 - gp.tileSize*4;	
+				
 		speed = 4;
-		direction = "up";
+		direction = "down";
 		imageChangeSpeed = 12;
 
 	}

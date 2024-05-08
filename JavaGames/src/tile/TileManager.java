@@ -95,20 +95,41 @@ public class TileManager {
 		
 		// 자동 그리기 
 		//mapTileNumber[][]
-		int col = 0;
-		int row = 0;
-		while(col < gp.maxWorldCol && row < gp.maxWorldRow 
-				&& 
-			col < gp.worldHeight -gp.screenHeight && row < gp.worldWidth - gp.screenWidth
-				) {
+		int worldCol = 0;
+		int worldRow = 0;
+		while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 			
-			int tileNum = mapTileNumber[col][row];
+			int tileNum = mapTileNumber[worldCol][worldRow];
+			int worldX = gp.tileSize * worldCol ; // tileSize 단위로 움직임
+			int worldY = gp.tileSize * worldRow ;
+
+			// 스타팅포인트와 스크링중앙 이라는 알수 있는 케릭터 좌표를 이용하여 월드맵 좌표를 찾는다. 
+			int screenX = worldX - gp.player.worldX + gp.player.screenX;	 
+			int screenY = worldY - gp.player.worldY + gp.player.screenY;	
+			 
 			
-			g2.drawImage(tile[tileNum].image, gp.tileSize*col, gp.tileSize*row, gp.tileSize, gp.tileSize, null);
-			col++;
-			if(gp.maxWorldCol == col) {
-				col=0;
-				row++;
+			// 50X50 전체 그리기
+			//g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			
+			// 16x12 (카메라영역 그리기)
+			int screenLeft 	= gp.player.worldX - gp.player.screenX - (gp.tileSize *1);
+			int screenRight = gp.player.worldX + gp.player.screenX + (gp.tileSize *1);
+			int screenTop 	= gp.player.worldY - gp.player.screenY - (gp.tileSize *1);
+			int screenBottom= gp.player.worldY + gp.player.screenY + (gp.tileSize *1);
+			
+			if(worldX > screenLeft && worldX < screenRight 
+					&& worldY < screenBottom && worldY > screenTop) {
+				
+				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+					
+			}
+			
+			
+			
+			worldCol++;
+			if(gp.maxWorldCol == worldCol) {
+				worldCol=0;
+				worldRow++;
 			}
 			
 		}
