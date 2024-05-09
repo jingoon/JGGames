@@ -56,8 +56,8 @@ public class Player extends Entity{
 	}
 	
 	public void update() {
-		// 상하좌우 이동
-		if(keyH.upPress) {
+		// keyPress 효과
+		if(keyH.upPress) {	
 			worldY -= speed; // 좌상단 좌표 (0,0)
 			direction = "up";			
 		}
@@ -75,7 +75,7 @@ public class Player extends Entity{
 		}
 		
 		
-		// img 변수
+		// 객체 keyPress IMG변화
 		if(Utill.moveKeyPress(keyH)) {
 			spriterCount++;
 			if(spriterCount>=imageChangeSpeed) {

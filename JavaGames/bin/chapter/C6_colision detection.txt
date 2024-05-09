@@ -1,0 +1,61 @@
+chater 6
+	
+	collision detection (충돌 감지)
+	
+1. tileManager 클래스에 각 tile의 충돌 설정.
+	- 변수 collision
+	- ex) 물, 벽 등은 충돌 true / 모래, 땅 등은 설정안함 (default=false)
+	
+2. Entity 클래스에 collision setting
+	1) 케릭터의 충돌영역 선언
+		- Rectangle 객체를 전역변수로 선언 : 플레이어 등 객체의 단단한 영역
+		- 변수명 solidArea
+	2) 충돌 변수 선언
+	- 변수명 collisionOn
+	- default false
+	
+3. Player 클래스에 케릭터 충돌영역 생성
+	1) 생성자에 Entity의 Rectangle 객체를 생성(인스턴스화)
+	- Rectangle: 직사각형 x,y,width,height
+	- 0,0      x,0
+	
+	
+	
+	  0,y      x,y  					width는 x이고, height는 y인데? 왜 인수가 4개인가?
+	 
+	- x,y		x+width,y
+	
+	
+	
+	  x,y+height x+width,y+height      -> x와 y는 영역 위치를 나타내고 width와 height가 크기를 나타냄
+	  
+	  -> 플레이어의 타일 48x48영역보다 작게 생성할 것이기 때문에 위치를 조절 8,8,32,32 
+
+4. main package에 충돌 체크 클래스 생성 (CollisionChecker)
+	- CollisionChecker는 Jpanel 전역변수를 만들고 생성자에서 인자로 받는다.
+	- checkTile metthod 생성, 인자로 Entity를 받음(Player 클래스보다 Entity를 인자로 받는 이유는 몬스터나 건물 등 다른 객체에서도 사용하기 위함)
+	
+5. Jpanel에 CollisionChecker를 생성(CollisionChecker 인스턴스화)한다.
+	- 변수명 cChecker
+	
+6. Player 클레스에 update메소드 수정
+	- keyPress효과 아래 삽입
+	- collisionOn=false; // 디폴트라 필요가 없을거 같지만..TEST
+	- checkTile metthod 호출, 인수는 this(Entity클래스를 상속했기 때문에)
+	
+	
+	
+7. 	CollisionChecker class에 checkTile metthod 수정
+	- 객체(player)가 solidTile(collision이 true)과 부딪히는지 확인.
+	- 케릭터의 위치 및 케릭터 타일의 각 꼭지점 좌표는 (worldX, worldY)x(worldX+tileSize, worldY+tileSize), x,y,w,h가 됨
+		
+	- 충돌감지를 위한 영역(solidArea)의 좌표 확인
+		- 인자로 받은 Entity들은 계산하여 충돌영역의 좌표를 확인
+		- lfetX = worldX + solidArea.x
+		- reigthX = lfetX + solidArea.width
+		- topY = worldY + solidArea.y
+		- bottomY = topY + solidArea.height
+	- solidArea 좌표를 확인하여 col값과 row값을 알아낸다. 
+		- solidArea의 각 좌표를 tileSize로 나눈 값. // ???
+	- Entity detection(keyPress)마다 충돌 위치를 정한다.
+	
