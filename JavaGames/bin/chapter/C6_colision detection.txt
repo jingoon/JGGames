@@ -56,6 +56,16 @@ chater 6
 		- topY = worldY + solidArea.y
 		- bottomY = topY + solidArea.height
 	- solidArea 좌표를 확인하여 col값과 row값을 알아낸다. 
-		- solidArea의 각 좌표를 tileSize로 나눈 값. // ???
+		- solidArea의 각 좌표를 tileSize로 나눈 값. (int형 이라서 소수점 이하는 버린다.)
+		- detection이 "up"일 때 solidArea의 좌상단 꼭지점과 겹치는 바닥타일을 알수있다.
+			-leftX를 tileSize로 나누면 그 worldMap배열의 x값을
+			-topY를 tileSize로 나누면 worldMap배열의 y값을 
+		- .. gp.tileM.mapTileNum[col][row] 로 타일을 특정
+			- "up"일때 좌상단, 우상단 과 겹치는 최대 두개의 타일의 collision 값으로 충돌여부를 알수있다.
+			- "down"일때 좌상단, 좌하단 과 겹치는 최대 두개의 타일의 collision 값으로 충돌여부를 알수있다.
 	- Entity detection(keyPress)마다 충돌 위치를 정한다.
+	- 총돌상황이라면 entity의 collisionOn에 true를 대입
+	
+8. Player객체에 6.checkTile 후 collisionOn 값이 false면 이동하는 조건문으로 추가 한다.
+
 	

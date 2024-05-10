@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -24,8 +25,16 @@ public class Player extends Entity{
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);		//화면 가로 가운데
 		screenY = gp.screenHeight/2 - (gp.tileSize/2);		//화면 세로 가운데 
 				
+		// 충돌영역 크기와 위치 생성
+		solidArea = new Rectangle();
+		solidArea.x = 8; 	// screen 기준
+		solidArea.y = 16;
+		solidArea.width = 32;
+		solidArea.height = 32;
+		
 		setDefaultValues();
 		getPlayerImage();
+				
 	}
 	
 	public void setDefaultValues() {
@@ -56,27 +65,39 @@ public class Player extends Entity{
 	}
 	
 	public void update() {
-		// keyPress 효과
-		if(keyH.upPress) {	
-			worldY -= speed; // 좌상단 좌표 (0,0)
-			direction = "up";			
-		}
-		if(keyH.downPress) {
-			worldY += speed;
-			direction = "down";			
-		}
-		if(keyH.leftPress) {
-			worldX -= speed;
-			direction = "left";
-		}
-		if(keyH.rigthPress) {
-			worldX += speed;
-			direction = "right";
-		}
-		
-		
-		// 객체 keyPress IMG변화
+		// movekey를 눌러야지만 움직임. 
 		if(Utill.moveKeyPress(keyH)) {
+		
+			// keyPress 효과(행동)
+			if(keyH.upPress) {	
+				direction = "up";			
+			}else if(keyH.downPress) {
+				direction = "down";			
+			}else if(keyH.leftPress) {
+				direction = "left";
+			}else if(keyH.rigthPress) {
+				direction = "right";
+			}
+			
+			
+			// 충돌감지
+			collisionOn = false; //안써도 될듯한데 TEST
+			gp.cChecker.checkTile(this);
+			
+			// IF COLLISION IS FALSE. PLAYER CAN MOVE
+			if(!collisionOn) {
+				// 이동
+				switch(direction) {
+					case("up"):  	worldY -= speed;	break;
+					case("down"): 	worldY += speed;	break;
+					case("left"): 	worldX -= speed;	break;
+					case("right"): 	worldX += speed;	break;
+				}
+				
+			}
+			
+			
+			// 객체 keyPress IMG변화
 			spriterCount++;
 			if(spriterCount>=imageChangeSpeed) {
 				if(imageNumber == 1) {
@@ -86,6 +107,7 @@ public class Player extends Entity{
 				}
 				spriterCount = 0;
 			}
+		
 		}
 				
 	}

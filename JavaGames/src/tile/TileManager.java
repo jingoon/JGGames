@@ -14,8 +14,8 @@ import main.GamePanel;
 public class TileManager {
 	
 	GamePanel gp;
-	Tile [] tile;	// 바닥, 물, 벽, 나무 등등 타일 종류
-	int mapTileNumber[][];	// 맵타일 배열, 메모장 읽기 
+	public Tile [] tile;	// 바닥, 물, 벽, 나무 등등 타일 종류
+	public int mapTileNumber[][];	// 맵타일 배열, 메모장 읽기 
 	
 	public TileManager(GamePanel gp) {
 		
@@ -69,14 +69,22 @@ public class TileManager {
 		
 			tile[0] = new Tile();	// 풀
 			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
+			
 			tile[1] = new Tile();	// 벽
 			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
+			tile[1].collision = true;	// 못지나감.
+			
 			tile[2] = new Tile();	// 물
 			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
+			tile[2].collision = true;	// 못지나감.
+			
 			tile[3] = new Tile();	// 땅
 			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
+			
 			tile[4] = new Tile();	// 나무
 			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
+			tile[4].collision = true;	// 못지나감.
+			
 			tile[5] = new Tile();	// 모래
 			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
 		
