@@ -1,5 +1,6 @@
 package main;
 
+
 public class Utill {
 	
 	public static boolean linerSearch(int code, int[] key) {
@@ -24,5 +25,5 @@ public class Utill {
 		
 		return false;
 	}
-
+	
 }

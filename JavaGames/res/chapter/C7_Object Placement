@@ -1,0 +1,42 @@
+chapter 7.
+
+object placement : 오브젝트 배치
+
+1. 이미지 준비 ( 키, 상자, 문 등 )
+2. res 폴더에 objects package 생성 후 이미지 저장
+3. src 폴더에 object package 생성, 그 아래 SuperObject class파일 생성
+4. SuperObject class
+	- 필드로 BufferedImage image, String name, boolean collision = false, int world x, world y
+5. object package
+	- OBJ_key class 생성, extends SuperObject
+	- constructor (생성자)
+		- name "key"
+		- key image road(ImageIO.read()사용)
+6. GamePanel
+	- player 인스턴스 아래 SuperObject 를 배열로 선언, 변수 obj = new SuperObject[10]
+7. main package
+	- AssetSetter class 생성 ( 배치작업 처리 전용, object들 배치 )
+	- 필드로 GamePanel 선언, gp
+	- 생성자는 GamePanel을 인수로 받고 필드에 대입
+8. GamePanel
+	- player 인스턴스 위에 AssetSetter를 인스턴스화, 변수 aSetter
+9. AssetSetter class
+	- setObject method 생성
+		- GamePanel의 SuperObject배열[0]에 OBJ_key를 인스턴스화
+			- OBJ_key의 위치를 설정
+				- world x, world y = 23*tileSize,7*tileSize
+		- [1]번에 OBJ_key를 인스턴스화 하고 위치를 23,40 설정
+10. GamePanel
+	- setupGame method를 생성
+	- AssetSetter의 setObject method를 호출
+11. main
+	- startGameTherad를 호출하기 전 GamePanel의 setupGame method를 호출
+12. SuperObject
+	- drow method를 생성 
+		- 인수 Graphics2D g2, GamePanel gp
+		- 이미지를 drow, ----------------------------[0]과 [1]의 구분은??
+13. GamePanel의 paintComponent method 
+	- tile drow 호출 후 object image를 drow
+		- 배열로 선언된 SuperObject 이기에 반복문을 통해 drow
+		- 각 배열이 null인지 체크 한다. nullPointException 주의.
+		

@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import object.SupperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -39,8 +40,12 @@ public class GamePanel extends JPanel implements Runnable{
 	Thread gameThread;
 	// CollisionChecker
 	public CollisionChecker cChecker = new CollisionChecker(this);
+	// object setUp
+	public AssetSetter aSetter = new AssetSetter(this);
 	// player
 	public Player player = new Player(this, keyH);
+	// Objects
+	public SupperObject obj[] = new SupperObject[10];		//objects 갯수
 	
 	// 화면 갱신
 	int FPS = 60;
@@ -57,6 +62,10 @@ public class GamePanel extends JPanel implements Runnable{
 		this.addKeyListener(keyH);
 		this.setFocusable(true); // with this, this GamePanel can be "focused" to receive key input
 		
+	}
+	
+	public void setupGame() {
+		aSetter.setObject(); 			// objects setting
 	}
 	
 	public void startGameThread() {
@@ -112,8 +121,20 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		tileM.draw(g2);		// 타일 드로우
-		player.draw(g2);	// 케릭터 드로우
+		// 타일 드로우
+		tileM.draw(g2);		
+		
+		// 오브젝트(아이템?) 드로우
+		for(int i = 0; i < obj.length; i++ ) {
+			if(obj[i]== null) {
+				continue;
+			}
+			obj[i].drow(g2, this);
+		}
+		
+		// 케릭터 드로우
+		player.draw(g2);	
+		
 		g2.dispose();
 				
 	}
