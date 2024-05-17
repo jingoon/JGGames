@@ -9,8 +9,9 @@ object placement : 오브젝트 배치
 	- 필드로 BufferedImage image, String name, boolean collision = false, int world x, world y
 5. object package
 	- OBJ_key class 생성, extends SuperObject
-	- name "key"
-	- key image road
+	- constructor (생성자)
+		- name "key"
+		- key image road(ImageIO.read()사용)
 6. GamePanel
 	- player 인스턴스 아래 SuperObject 를 배열로 선언, 변수 obj = new SuperObject[10]
 7. main package
