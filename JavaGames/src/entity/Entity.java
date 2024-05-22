@@ -21,5 +21,6 @@ public class Entity {
 	
 	// 충돌세팅
 	public boolean collisionOn = false;
-	public Rectangle solidArea;					
+	public Rectangle solidArea;	
+	public int solidAreaDefaultX, solidAreaDefaultY; 
 }

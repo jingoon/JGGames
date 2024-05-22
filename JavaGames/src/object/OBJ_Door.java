@@ -8,7 +8,7 @@ public class OBJ_Door extends SupperObject{
 
 	public OBJ_Door() {
 		name = "Door";
-		
+		collision = true;
 		try {
 			
 			image = ImageIO.read(getClass().getResourceAsStream("/objects/door.png"));

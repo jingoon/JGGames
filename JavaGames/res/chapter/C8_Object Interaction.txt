@@ -1,0 +1,6 @@
+chapter 8
+Object Interaction 오브젝트 상호작용
+
+1. object의 rectangle을 추가
+2. player의 rectangle과 비교 inertsects(교차함수)를 사용하여 충돌 감지
+3. collision checker에 충돌했을 때 리엑션 추가 . 각 오브젝트의 특성에 따라

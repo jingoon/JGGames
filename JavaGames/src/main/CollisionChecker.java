@@ -9,9 +9,60 @@ public class CollisionChecker {
 		this.gp = gp;
 	}
 	
+	// collision Object
+	public int checkObject(Entity entity, boolean playerTf) {
+		int index = 999;
+		// entity(player)와 object의 위치가 교차하는지 체크
+		// Rectangle.intersects()를 사용하기 위해 좌표를 사용하고, solidAreaDefault좌표로 초기화함.
+		entity.solidArea.x += entity.worldX;
+		entity.solidArea.y += entity.worldY;
+		
+		for(int i=0; i < gp.obj.length; i++) {
+			if(gp.obj[i] == null) {
+				continue;
+			}
+			gp.obj[i].solidArea.x += gp.obj[i].worldX;
+			gp.obj[i].solidArea.y += gp.obj[i].worldY;
+
+			// 방향에 따라 미리 감지하여 낑기지 안도록 한다.
+			switch(entity.direction) {
+			case "up":
+				entity.solidArea.y -= entity.speed;
+				break;
+			case "down":
+				entity.solidArea.y += entity.speed;
+				break;
+			case "left":
+				entity.solidArea.x -= entity.speed;
+				break;
+			case "right":
+				entity.solidArea.x += entity.speed;
+				break;
+			}
+			
+			if(gp.obj[i].solidArea.intersects(entity.solidArea)) {
+				if(gp.obj[i].collision) {
+					entity.collisionOn = true;
+				}
+				if(playerTf) {
+					index = i;				
+				}
+			}
+			// object solidArea position 초기화
+			gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
+			gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+		}
+		// entity(player) solidArea position 초기화
+		entity.solidArea.x = entity.solidAreaDefaultX;
+		entity.solidArea.y = entity.solidAreaDefaultY;
+		
+		return index;
+	}
+	
+	// collision Tiles
 	public void checkTile(Entity entity) {
 		
-		//entity와 겹치는 타일이 좌상 우상 좌하 우하 에 있는지 체크
+		// entity(player)와 겹치는 타일이 좌상 우상 좌하 우하 에 있는지 체크
 		
 		int entityLeftX = entity.worldX  + entity.solidArea.x;
 		int entityRightX = entityLeftX + entity.solidArea.width;

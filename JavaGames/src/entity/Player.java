@@ -15,6 +15,7 @@ public class Player extends Entity{
 
 	GamePanel gp;
 	KeyHandler keyH;
+	public int hasKey = 0;
 	
 	public final int screenX, screenY;	// 스크린에서 케릭터 위치
 	
@@ -27,10 +28,13 @@ public class Player extends Entity{
 				
 		// 충돌영역 크기와 위치 생성
 		solidArea = new Rectangle();
-		solidArea.x = 8; 	// screen 기준
+		solidArea.x = 8; 	// player 기준
 		solidArea.y = 16;
 		solidArea.width = 32;
 		solidArea.height = 32;
+		// object 충돌감지 후 초기화 변수
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -80,9 +84,13 @@ public class Player extends Entity{
 			}
 			
 			
-			// 충돌감지
+			// CHECK TILE COLLISION 타일 충돌감지
 			collisionOn = false; //안써도 될듯한데 TEST
 			gp.cChecker.checkTile(this);
+			
+			// CHECK OBJECT COLLISION object 충돌감지
+			int objectIndex = gp.cChecker.checkObject(this, true);
+			pickUpObject(objectIndex);
 			
 			// IF COLLISION IS FALSE. PLAYER CAN MOVE
 			if(!collisionOn) {
@@ -95,7 +103,6 @@ public class Player extends Entity{
 				}
 				
 			}
-			
 			
 			// 객체 keyPress IMG변화
 			spriterCount++;
@@ -110,6 +117,29 @@ public class Player extends Entity{
 		
 		}
 				
+	}
+	
+	// object collision effect 오브젝트 충돌 효과 
+	public void pickUpObject(int i) {
+		
+		if(i != 999) {
+			String objectName = gp.obj[i].name;
+			switch(objectName) {
+			case "Key":
+				hasKey++;
+				gp.obj[i] = null;
+				break;
+			case "Door":
+				if(hasKey>0) {
+					gp.obj[i] = null;
+					hasKey--;
+				}
+				break;
+			case "Chest":
+				break;
+				
+			}
+		}
 	}
 	
 	public void draw(Graphics2D g2) {
