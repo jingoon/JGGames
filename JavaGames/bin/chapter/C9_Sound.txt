@@ -1,0 +1,61 @@
+chapter 9. sound
+
+add Boots object
+	- 부츠 아이템 생성 추가.
+	- 아이템 픽업 효과 추가.(이속증가)
+
+1. res polder 
+	- sound package 생성
+2. sound package
+	- sound 파일 준비
+	- .wav 만 인식
+3. main package
+	- Sound class 생성
+4. Sound class
+	- 필드 선언: Clip clip, 사운드 주소(URL)의 배열을 인스턴스화
+		- URL soundURL[] = new URL[30]
+	- 생성자
+		- 주소배열에 각 사운드 getResource
+	- setFile(), play(), loop(), stop() 메소드 생성
+		- setFile()
+			- 사운드 road
+			- 인자로 URL 배열의 index를 받음
+			- AudioInputStream ais AudioInputStream.getAudioInputStream("URL");
+			  clip = AudioSystem.getClip();
+			  clip.open(ais);
+		- play()
+			- 클립 시작
+			- clip.start();
+		- loop()
+			- 사운드 반복
+			- clip.loop(Clip.LOOP_CONTINUOUSLY)	// 무한반복
+		- stop()
+			- 사운드 종료
+			- clip.stop();
+	
+5. GamePanel class
+	- KeyHandler 다음에 Sound class 인스턴스화
+	- 메소드 생성: 사운드 시작, 사운드 멈춤, 사운드 이펙트
+		- playMusic method 
+			- 배경음 호출 메서드로 loop()를 호출
+			- 인자로 index 받음
+			- setFile() 호출
+			- play() 호출
+			- loop() 호출
+		- stopMusic method
+			- stop() 호출
+		- playSE method
+			- 호과 사운드만 한번 호출 
+			- 인자로 index 받음 
+			- setFile() 호출
+			- play() 호출
+	- setGame method
+		- playMusic 메서드를 호출하여 배경음 실행.
+6. Player class
+	- 아이템 습득 시, 각 아이템 효과음 설정 
+		- playSE() 호출
+		
+		
+		
+		
+		

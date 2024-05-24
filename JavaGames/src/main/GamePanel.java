@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.LinkedList;
 
 import javax.swing.JPanel;
 
@@ -32,23 +33,22 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int worldWidth = tileSize * maxWorldCol;	// tile 갯수 * tile 사이즈
 	public final int worldHeight = tileSize * maxWorldRow;
 	
-	// TileManager
-	TileManager tileM = new TileManager(this);
-	// keyPress
-	KeyHandler keyH = new KeyHandler();
-	// Thread
-	Thread gameThread;
-	// CollisionChecker
-	public CollisionChecker cChecker = new CollisionChecker(this);
-	// object setUp
-	public AssetSetter aSetter = new AssetSetter(this);
-	// player
-	public Player player = new Player(this, keyH);
-	// Objects
-	public SupperObject obj[] = new SupperObject[10];		//objects 갯수
-	
 	// 화면 갱신
 	int FPS = 60;
+	
+	// SYSTEM
+	public TileManager tileM = new TileManager(this);						// TileManager
+	public KeyHandler keyH = new KeyHandler();								// keyPress
+	public Sound sound = new Sound();										// sound(BGM, effectSound, ..)
+	public CollisionChecker cChecker = new CollisionChecker(this);	// CollisionChecker
+	public AssetSetter aSetter = new AssetSetter(this);				// object setUp
+	Thread gameThread;												// Thread
+
+	// ENTITY AND OBJECT
+	public Player player = new Player(this, keyH);					// player
+	public SupperObject obj[] = new SupperObject[10];				// Objects, 갯수
+	
+	
 		
 	public GamePanel() {
 		
@@ -65,7 +65,23 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void setupGame() {
+		playMusic(0);					// BGM start
 		aSetter.setObject(); 			// objects setting
+	}
+	
+	public void playMusic(int i) {
+		sound.setFile(i); 	// BGM
+		sound.play();
+		sound.loop();
+	}
+	
+	public void stopMusic() {
+		sound.stop();
+	}
+	
+	public void playSE(int i) {
+		sound.setFile(i); 	// BGM
+		sound.play();
 	}
 	
 	public void startGameThread() {
@@ -86,8 +102,8 @@ public class GamePanel extends JPanel implements Runnable{
 		while (gameThread != null) {
 			currentTime = System.nanoTime();
 			
-			delta += (currentTime - lastTime) / drawInterver; // 경과시간을 drawInterver로 나눈후 누적. 최종 1이상 될때 update하기 위함
-			timer += (currentTime - lastTime); // 경과시간을 누적
+			delta += (currentTime - lastTime) / drawInterver; 	// 경과시간을 drawInterver로 나눈후 누적. 최종 1이상 될때 update하기 위함
+			timer += (currentTime - lastTime); 					// 경과시간을 누적
 			lastTime = currentTime;
 			
 			

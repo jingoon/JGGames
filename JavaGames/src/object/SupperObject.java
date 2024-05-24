@@ -16,6 +16,10 @@ public class SupperObject {
 	public int solidAreaDefaultX = 0;
 	public int solidAreaDefaultY = 0;
 	
+	public void update(int x, int y) {
+		worldX = x;
+		worldY = y;
+	}
 	
 	public void drow(Graphics2D g2, GamePanel gp) {
 		
