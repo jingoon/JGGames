@@ -39,14 +39,15 @@ public class GamePanel extends JPanel implements Runnable{
 	// SYSTEM
 	public TileManager tileM = new TileManager(this);						// TileManager
 	public KeyHandler keyH = new KeyHandler();								// keyPress
-	public Sound sound = new Sound();										// sound(BGM, effectSound, ..)
-	public CollisionChecker cChecker = new CollisionChecker(this);	// CollisionChecker
-	public AssetSetter aSetter = new AssetSetter(this);				// object setUp
-	Thread gameThread;												// Thread
+	public Sound music = new Sound();										// sound(BGM, ..)
+	public Sound soundEffect = new Sound();									// sound(effectSound, ..)
+	public CollisionChecker cChecker = new CollisionChecker(this);			// CollisionChecker
+	public AssetSetter aSetter = new AssetSetter(this);						// object setUp
+	Thread gameThread;														// Thread
 
 	// ENTITY AND OBJECT
-	public Player player = new Player(this, keyH);					// player
-	public SupperObject obj[] = new SupperObject[10];				// Objects, 갯수
+	public Player player = new Player(this, keyH);							// player
+	public SupperObject obj[] = new SupperObject[10];						// Objects, 갯수
 	
 	
 		
@@ -70,18 +71,18 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void playMusic(int i) {
-		sound.setFile(i); 	// BGM
-		sound.play();
-		sound.loop();
+		music.setFile(i); 	// BGM
+		music.play();
+		music.loop();
 	}
 	
 	public void stopMusic() {
-		sound.stop();
+		music.stop();
 	}
 	
 	public void playSE(int i) {
-		sound.setFile(i); 	// BGM
-		sound.play();
+		soundEffect.setFile(i); 	// BGM
+		soundEffect.play();
 	}
 	
 	public void startGameThread() {

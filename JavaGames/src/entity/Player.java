@@ -129,7 +129,7 @@ public class Player extends Entity{
 			switch(objectName) {
 			case "Key":
 				hasKey++;
-				gp.playSE(gp.sound.soundIndexList.get("coin"));
+				gp.playSE(gp.soundEffect.soundIndexList.get("coin"));
 				gp.obj[i] = null;
 				break;
 			case "Boots":
@@ -138,13 +138,13 @@ public class Player extends Entity{
 				break;
 			case "Door":
 				if(hasKey>0) {
-					gp.playSE(gp.sound.soundIndexList.get("unlock"));
+					gp.playSE(gp.soundEffect.soundIndexList.get("unlock"));
 					gp.obj[i] = null;
 					hasKey--;
 				}
 				break;
 			case "Chest":
-				gp.playSE(gp.sound.soundIndexList.get("unlock"));
+				gp.playSE(gp.soundEffect.soundIndexList.get("unlock"));
 				int x = gp.obj[i].worldX;
 				int y = gp.obj[i].worldY;
 				gp.obj[i] = null;
