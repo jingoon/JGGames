@@ -1,0 +1,36 @@
+chapter 10 
+
+	UI and Text (습득아이템 표시, 이펙트 메시지, 설명 등)
+	
+- sound 인스턴스를 두개로 나눠 뮤직과 효과음을 분리.
+
+- 플레이어가 갖고있는 키를 스크린에 표시
+- 키, 문과 상자를 열때 메시지 출력
+- 상자가 열리면 게임이 끝남
+- 게임이 끝나면 화면이 멈추고 스크린에 성공 메시지를 출력
+- 게임 진행 시간 표시, 게임이 끝나면 시간이 멈추고 기록으로 출력
+
+
+1. main package
+	- UI class 생성
+		- 생성자에 gamePanel을 인수로 생성자 생성, 필드에 대입
+		- Font 인스턴스 생성, 필드에 대입
+		- draw 매소드 생성, Graphics2D g2인수
+			- g2.setFont 로 폰드, 글사이즈 생성
+			- 글색 지정
+			- g2.drawStrig으로 text 지정
+			- 키를 이미지로 표시.
+
+2. GamePanel class
+	- paintComponent method
+		- UI class에 draw() 호출
+3. UI class
+	- 필드 messageOn =false, String message =""
+	- showMessage(String text) method 생성
+		- message = text, messageOn = true 
+	- draw 메소드
+		- messageOn = ture 일때 drawStrig
+4. Player class
+	- action 에 showMessage() 호출 
+	
+	

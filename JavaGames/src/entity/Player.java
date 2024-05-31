@@ -11,6 +11,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import main.Utill;
 import object.OBJ_Boots;
+import object.SupperObject;
 
 public class Player extends Entity{
 
@@ -131,29 +132,45 @@ public class Player extends Entity{
 				hasKey++;
 				gp.playSE(gp.soundEffect.soundIndexList.get("coin"));
 				gp.obj[i] = null;
+				gp.ui.showMassage("열쇠를 획득하였습니다.");
 				break;
 			case "Boots":
 				gp.obj[i] = null;
 				speed += 2;
+				gp.playSE(2);
+				gp.ui.showMassage("속도 업!");
 				break;
 			case "Door":
+				gp.obj[i] = null;
 				if(hasKey>0) {
 					gp.playSE(gp.soundEffect.soundIndexList.get("unlock"));
 					gp.obj[i] = null;
 					hasKey--;
+				}else {
+					gp.ui.showMassage("열쇠가 없습니다.");
+					if(gp.ui.messageTimer>60 && gp.ui.messageTimer<120 ) {
+						gp.ui.showMassage("열쇠를 찾으세요!");
+					}
 				}
 				break;
 			case "Chest":
-				gp.playSE(gp.soundEffect.soundIndexList.get("unlock"));
-				int x = gp.obj[i].worldX;
-				int y = gp.obj[i].worldY;
-				gp.obj[i] = null;
-				gp.obj[i] = new OBJ_Boots();
-				gp.obj[i].update(x+gp.tileSize, y+gp.tileSize);
+				gp.playSE(4);
+				createItem(i, new OBJ_Boots());
+				gp.ui.gameFinished = true;		// 종료 UI
+				gp.stopMusic(); 				// BGM 종료
 				break;
 				
 			}
 		}
+	}
+	
+	// pickUpObject() 호출 시 해당 아이템이 사라지고 새로운 아이템 생성
+	private void createItem(int index, SupperObject item) {
+		int x = gp.obj[index].worldX;
+		int y = gp.obj[index].worldY;
+		gp.obj[index] = null;
+		gp.obj[index] = item;
+		gp.obj[index].update(x+gp.tileSize, y+gp.tileSize);
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -192,7 +209,6 @@ public class Player extends Entity{
 		}
 		
 		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-		
 		
 	}
 	

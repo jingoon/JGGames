@@ -20,16 +20,16 @@ public class KeyHandler implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		
-		if(Utill.linerSearch(code, UP)) {
+		if(linerSearch(code, UP)) {
 			upPress = true;
 		}
-		if(Utill.linerSearch(code, DOWN)) {
+		if(linerSearch(code, DOWN)) {
 			downPress = true;
 		}
-		if(Utill.linerSearch(code, LEFT)) {
+		if(linerSearch(code, LEFT)) {
 			leftPress = true;
 		}
-		if(Utill.linerSearch(code, RIGHT)) {
+		if(linerSearch(code, RIGHT)) {
 			rigthPress = true;
 		}
 		
@@ -39,21 +39,35 @@ public class KeyHandler implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 		
-		if(Utill.linerSearch(code, UP)) {
+		if(linerSearch(code, UP)) {
 			upPress = false;
 		}
-		if(Utill.linerSearch(code, DOWN)) {
+		if(linerSearch(code, DOWN)) {
 			downPress = false;
 		}
-		if(Utill.linerSearch(code, LEFT)) {
+		if(linerSearch(code, LEFT)) {
 			leftPress = false;
 		}
-		if(Utill.linerSearch(code, RIGHT)) {
+		if(linerSearch(code, RIGHT)) {
 			rigthPress = false;
 		}
 		
 	}
 	
+	// 키 할당
+	public boolean linerSearch(int code, int[] key) {
+		
+		boolean codeInKeyList = false;
+		
+		for (int value : key) {
+			if(value == code) {
+				codeInKeyList = true;
+				break;
+			}
+		};
+		
+		return codeInKeyList;
+	}
 	
 
 }
