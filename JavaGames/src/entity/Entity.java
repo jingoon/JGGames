@@ -15,9 +15,9 @@ public class Entity {
 	public int spriterCount = 0;	// img 변환 카운팅변수
 	public int imageNumber = 1; 	// img 변환 종류변수
 	// move image 변환 속도 
-	// imageChangeSpeed가 60이면 초당 1번 변환(FPS=60 일때)
-	// imageChangeSpeed * 초당변환횟수 = FPS
-	public int imageChangeSpeed;	
+	// moveChangeSpeed가 60이면 초당 1번 변환(FPS=60 일때)
+	// moveChangeSpeed * 초당변환횟수 = FPS
+	public int moveChangeSpeed;	
 	
 	// 충돌세팅
 	public boolean collisionOn = false;

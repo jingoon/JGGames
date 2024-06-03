@@ -9,8 +9,10 @@ public class KeyHandler implements KeyListener{
 	final int DOWN[] = {KeyEvent.VK_S, KeyEvent.VK_DOWN };
 	final int LEFT[] = {KeyEvent.VK_A, KeyEvent.VK_LEFT};
 	final int RIGHT[] = {KeyEvent.VK_D, KeyEvent.VK_RIGHT};
+	final int DRAWTIME[] = {KeyEvent.VK_T};
 	
 	public boolean upPress, downPress, leftPress, rigthPress;
+	boolean drawTimePress = false; // check draw time
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -32,6 +34,8 @@ public class KeyHandler implements KeyListener{
 		if(linerSearch(code, RIGHT)) {
 			rigthPress = true;
 		}
+		
+		drawTimePress = keySwitch(code, DRAWTIME, drawTimePress );
 		
 	}
 
@@ -67,6 +71,23 @@ public class KeyHandler implements KeyListener{
 		};
 		
 		return codeInKeyList;
+	}
+	
+	// 키 스위치
+	private boolean keySwitch(int code, int[] key, boolean stste) {
+		
+		for (int value : key) {
+			if(value == code) {
+				if(stste) {
+					stste = false;
+				}else{
+					stste = true;
+				}
+				break;
+			}
+		};
+		return stste;
+		
 	}
 	
 

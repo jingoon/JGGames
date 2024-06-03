@@ -13,6 +13,9 @@ import object.SupperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
+	// drawTime test
+	int count =0 ;
+	long pas =0 ;
 	
 	// 화면 세팅
 	final int originalTileSize = 16; // 16x16 tile
@@ -37,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	
 	// SYSTEM
+	public Utill utill = new Utill();
 	public TileManager tileM = new TileManager(this);						// TileManager
 	public KeyHandler keyH = new KeyHandler();								// keyPress
 	public Sound music = new Sound();										// sound(BGM, ..)
@@ -139,6 +143,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
+		// 디버그
+		long drawStart = System.nanoTime();		
+		
 		// 타일 드로우
 		tileM.draw(g2);		
 		
@@ -153,9 +160,26 @@ public class GamePanel extends JPanel implements Runnable{
 		// 케릭터 드로우
 		player.draw(g2);
 		
-		// 화면 텍스트
+		// 화면 UI, 텍스트
 		ui.draw(g2);
 		
+		// 디버그
+		long drawEnd = System.nanoTime();
+		long passed = drawEnd - drawStart;
+		
+		if(keyH.drawTimePress) {
+			g2.setFont(ui.godic_40);
+			g2.setColor(Color.white);
+			g2.drawString("Draw Time :"+passed , 10, 400);
+			count++;
+			pas += passed;
+			while(count	== 600) {
+				System.out.println(pas/count);
+				count = 0;
+				pas = 0;
+			}
+		}
+
 		g2.dispose();
 				
 	}

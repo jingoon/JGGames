@@ -1,0 +1,11 @@
+Chapter 11
+
+	Improving Rendering Performance
+	
+- 이미지 렌더링 개선 및 최적화
+- 타일 이미지 렌더링 시 사이즈 변환을 한번에 한다?? 
+
+1.GamePanel class
+	- paintComponent()의 소요시간을 nanoTime으로 측정.
+	- 키보드의 "T"키로 on/off 할 수 있도록 구현
+	

@@ -50,29 +50,51 @@ public class Player extends Entity{
 				
 		speed = 4;
 		direction = "down";
-		imageChangeSpeed = 12;
+		moveChangeSpeed = 12;
 
 	}
 	
 	public void getPlayerImage() {
+		up1 = setup("boy_up_1");
+		up2 = setup("boy_up_2");
+		down1 = setup("boy_down_1");
+		down2 = setup("boy_down_2");
+		right1 = setup("boy_right_1");
+		right2 = setup("boy_right_2");
+		left1 = setup("boy_left_1");
+		left2 = setup("boy_left_2");
+		
+//		try {
+//			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
+//			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
+//			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
+//			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
+//			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
+//			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
+//			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
+//			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
+	}
+	
+	public BufferedImage setup(String pathName) {
+		
+		BufferedImage image = null;
+		
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/"+pathName+".png"));
+			image = gp.utill.scaleImage(image, gp.tileSize, gp.tileSize);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		return image;
 	}
-	
 	public void update() {
 		// movekey를 눌러야지만 움직임. 
-		if(Utill.moveKeyPress(keyH)) {
+		if(gp.utill.moveKeyPress(keyH)) {
 		
 			// keyPress 효과(행동)
 			if(keyH.upPress) {	
@@ -108,7 +130,7 @@ public class Player extends Entity{
 			
 			// 객체 keyPress IMG변화
 			spriterCount++;
-			if(spriterCount>=imageChangeSpeed) {
+			if(spriterCount>=moveChangeSpeed) {
 				if(imageNumber == 1) {
 					imageNumber = 2;
 				}else if(imageNumber == 2) {
@@ -141,7 +163,6 @@ public class Player extends Entity{
 				gp.ui.showMassage("속도 업!");
 				break;
 			case "Door":
-				gp.obj[i] = null;
 				if(hasKey>0) {
 					gp.playSE(gp.soundEffect.soundIndexList.get("unlock"));
 					gp.obj[i] = null;
@@ -154,8 +175,8 @@ public class Player extends Entity{
 				}
 				break;
 			case "Chest":
-				gp.playSE(4);
-				createItem(i, new OBJ_Boots());
+				gp.playSE(4);					// 종료 사운드
+				//createItem(i, new OBJ_Boots());
 				gp.ui.gameFinished = true;		// 종료 UI
 				gp.stopMusic(); 				// BGM 종료
 				break;
@@ -208,7 +229,7 @@ public class Player extends Entity{
 			break;
 		}
 		
-		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, screenX, screenY, null);
 		
 	}
 	
