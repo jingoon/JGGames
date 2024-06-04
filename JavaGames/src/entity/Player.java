@@ -63,20 +63,7 @@ public class Player extends Entity{
 		right2 = setup("boy_right_2");
 		left1 = setup("boy_left_1");
 		left2 = setup("boy_left_2");
-		
-//		try {
-//			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-//			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-//			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-//			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-//			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-//			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-//			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-//			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		
+				
 	}
 	
 	public BufferedImage setup(String pathName) {
@@ -176,7 +163,7 @@ public class Player extends Entity{
 				break;
 			case "Chest":
 				gp.playSE(4);					// 종료 사운드
-				//createItem(i, new OBJ_Boots());
+				createItem(i, new OBJ_Boots(gp));
 				gp.ui.gameFinished = true;		// 종료 UI
 				gp.stopMusic(); 				// BGM 종료
 				break;

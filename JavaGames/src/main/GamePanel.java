@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	
 	// SYSTEM
-	public Utill utill = new Utill();
+	public Utill utill = new Utill();										// Utility Tool
 	public TileManager tileM = new TileManager(this);						// TileManager
 	public KeyHandler keyH = new KeyHandler();								// keyPress
 	public Sound music = new Sound();										// sound(BGM, ..)
@@ -164,16 +164,15 @@ public class GamePanel extends JPanel implements Runnable{
 		ui.draw(g2);
 		
 		// 디버그
-		long drawEnd = System.nanoTime();
-		long passed = drawEnd - drawStart;
-		
 		if(keyH.drawTimePress) {
+			long drawEnd = System.nanoTime();
+			long passed = drawEnd - drawStart;
 			g2.setFont(ui.godic_40);
 			g2.setColor(Color.white);
 			g2.drawString("Draw Time :"+passed , 10, 400);
 			count++;
 			pas += passed;
-			while(count	== 600) {
+			while(count	== 300) {
 				System.out.println(pas/count);
 				count = 0;
 				pas = 0;

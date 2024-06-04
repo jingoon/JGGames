@@ -9,3 +9,12 @@ Chapter 11
 	- paintComponent()의 소요시간을 nanoTime으로 측정.
 	- 키보드의 "T"키로 on/off 할 수 있도록 구현
 	
+2. 각 class의 draw() 메서드의 ImageDraw() 수정
+	- 각 ImageDraw()를 할때 리사이징을 하여 크기를 변경하는데 gp.tileSize로 동일
+	- 이를 image를 불러올때 리사이징하여 인스턴스화 해서 저장해두고
+	- 그릴때는 리사이징 인수를 뺀다.
+		-> g2.drawImage(image, x, y, width, height, null);
+		--> g2.drawImage(image, width, height, null);
+	-u Utill class로 scaleImage() 메서드를 만든다.
+	
+3. objects의 렌더링도 superObject에 메서드로 만들고 통합, Utill을 GamePanel에서 인스턴스화 

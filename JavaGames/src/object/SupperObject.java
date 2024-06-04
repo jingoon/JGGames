@@ -3,6 +3,9 @@ package object;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import main.GamePanel;
 
@@ -21,6 +24,15 @@ public class SupperObject {
 		worldY = y;
 	}
 	
+	public void setup(String pathName, GamePanel gp) {
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/objects/"+name+".png"));
+			image = gp.utill.scaleImage(image, gp.tileSize, gp.tileSize);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void drow(Graphics2D g2, GamePanel gp) {
 		
 		int screenX = worldX - gp.player.worldX + gp.player.screenX;	 
@@ -35,7 +47,7 @@ public class SupperObject {
 		if(worldX > screenLeft && worldX < screenRight 
 				&& worldY < screenBottom && worldY > screenTop) {
 			
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			g2.drawImage(image, screenX, screenY, null);
 				
 		}
 	}

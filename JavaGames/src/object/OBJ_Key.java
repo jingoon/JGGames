@@ -1,20 +1,16 @@
 package object;
 
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import main.GamePanel;
 
 public class OBJ_Key extends SupperObject{
+	
+	GamePanel gp;
 
-	public OBJ_Key() {
-		name = "Key";
-
-		try {
+	public OBJ_Key(GamePanel gp) {
 		
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/key.png"));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.gp = gp;
+		name = "Key";
+		setup(name.toLowerCase(), gp);
+
 	}
 }

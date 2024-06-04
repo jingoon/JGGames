@@ -23,7 +23,7 @@ public class UI {
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
-		OBJ_Key key = new OBJ_Key();
+		OBJ_Key key = new OBJ_Key(gp);
 		keyImage = key.image;
 		
 		//Utill.printFontStyle();	// 시스템 폰트 List
@@ -75,7 +75,7 @@ public class UI {
 			// have key
 			g2.setFont(godic_40);
 			g2.setColor(Color.white);
-			g2.drawImage(keyImage, gp.tileSize/2, gp.tileSize/2, gp.tileSize, gp.tileSize, null);
+			g2.drawImage(keyImage, gp.tileSize/2, gp.tileSize/2, null);
 			g2.drawString(" = "+gp.player.hasKey, gp.tileSize+(gp.tileSize/2), gp.tileSize+(gp.tileSize/3));
 			
 			// game time
