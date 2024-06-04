@@ -96,7 +96,7 @@ public class Player extends Entity{
 			
 			
 			// CHECK TILE COLLISION 타일 충돌감지
-			collisionOn = false; //안써도 될듯한데 TEST
+			collisionOn = false; 		//안쓰면 낑김.
 			gp.cChecker.checkTile(this);
 			
 			// CHECK OBJECT COLLISION object 충돌감지

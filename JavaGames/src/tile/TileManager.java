@@ -21,10 +21,10 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		
 		this.gp = gp;
-		tile = new Tile[10];	// 타일번호
+		tile = new Tile[50];	// 타일번호
 		mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];	// 지도타일 배열
 		getTileImage();
-		loadMap("/maps/world01.txt");
+		loadMap("/maps/worldV2.txt");
 	}
 	
 	// mapTileNumber[][] 세팅
@@ -65,42 +65,52 @@ public class TileManager {
 	}
 	
 	public void getTileImage() {
-
-		setup(0, "grass", "풀", false);
-		setup(1, "wall", "벽", true);
-		setup(2, "water", "물", true);
-		setup(3, "earth", "땅", false);
-		setup(4, "tree", "나무", true);
-		setup(5, "sand", "모래", false);
+		// -> 사용안하는 타일
+		setup(0, "grass00", "xx", true);
+		setup(1, "grass00", "xx", true);
+		setup(2, "grass00", "xx", true);
+		setup(3, "grass00", "xx", true);
+		setup(4, "grass00", "xx", true);
+		setup(5, "grass00", "xx", true);
+		setup(6, "grass00", "xx", true);
+		setup(7, "grass00", "xx", true);
+		setup(8, "grass00", "xx", true);
+		setup(9, "grass00", "xx", true);
+		// <- 사용안함
 		
-		
-//		try {
-//		
-//			tile[0] = new Tile();	// 풀
-//			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
-//			
-//			tile[0].image = gp.utill.scaleImage(tile[0].image, gp.tileSize, gp.tileSize);
-//			
-//			tile[1] = new Tile();	// 벽
-//			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-//			tile[1].collision = true;	// 못지나감.
-//			
-//			tile[2] = new Tile();	// 물
-//			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
-//			tile[2].collision = true;	// 못지나감.
-//			
-//			tile[3] = new Tile();	// 땅
-//			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
-//			
-//			tile[4] = new Tile();	// 나무
-//			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-//			tile[4].collision = true;	// 못지나감.
-//			
-//			tile[5] = new Tile();	// 모래
-//			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+			
+		setup(10, "grass00", "풀", false);
+		setup(11, "grass01", "풀", false);
+		setup(12, "water00", "물", true);  
+		setup(13, "water01", "물", true);  
+		setup(14, "water02", "물", true);  
+		setup(15, "water03", "물", true);  
+		setup(16, "water04", "물", true);  
+		setup(17, "water05", "물", true);  
+		setup(18, "water06", "물", true);  
+		setup(19, "water07", "물", true);  
+		setup(20, "water08", "물", true);  
+		setup(21, "water09", "물", true);  
+		setup(22, "water10", "물", true);  
+		setup(23, "water11", "물", true);  
+		setup(24, "water12", "물", true);  
+		setup(25, "water13", "물", true);  
+		setup(26, "road00", "길", false);
+		setup(27, "road01", "길", false);
+		setup(28, "road02", "길", false);
+		setup(29, "road03", "길", false);
+		setup(30, "road04", "길", false);
+		setup(31, "road05", "길", false);
+		setup(32, "road06", "길", false);
+		setup(33, "road07", "길", false);
+		setup(34, "road08", "길", false);
+		setup(35, "road09", "길", false);
+		setup(36, "road10", "길", false);
+		setup(37, "road11", "길", false);
+		setup(38, "road12", "길", false);
+		setup(39, "earth", "땅", false);
+		setup(40, "wall", "벽", true);
+		setup(41, "tree", "나무", true);
 		
 	}
 	public void setup(int index, String pathName, String kName, boolean collision) {
@@ -152,7 +162,6 @@ public class TileManager {
 			if(worldX > screenLeft && worldX < screenRight 
 					&& worldY < screenBottom && worldY > screenTop) {
 				
-//				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 				g2.drawImage(tile[tileNum].image, screenX, screenY, null);
 					
 			}
