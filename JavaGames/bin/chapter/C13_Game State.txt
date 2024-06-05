@@ -1,0 +1,50 @@
+chapter 13. 
+
+	Game State
+	
+- after loadMap
+	- Game State
+	- NPC and Dialogue System
+	- player State
+	- Monster(simple AI)
+	- Inventory
+	- merchant NPC
+	- tile Screen, gg Screen
+	- ...
+
+1. 이전 보물찾기 object와 UI를 제거. 
+	- UI.draw()
+	- AssetSetter.setObject()
+	- Player.pickUpObject()
+	
+2. 일시정지 모드 추가
+	- 화면을 정지하고 반투명 UI를 띄운다.
+	- 게임타이틀, NPC대화, 상점사용, 인벤토리사용 등
+	- 플레이모드와 일시정지모드를 구분하는 상태를 추가하여 같은 키라도 다르게 사용된다.
+	- GamePanel class
+		-  int gameState, playState, pauseState 추가 
+		- setupGame()에 디폴트 gameState = playState;
+		- update()
+			- gameState의 따른 분기
+				- playState일때 update 
+				- pauseState일때 . 일시정지 시 추후 추가
+				
+3. 모드 변경 키 추가
+		- 버튼(ESC)누르면 모드 변경
+	
+4. UI class
+	-draw()
+		- 이전 코드 제거
+		- 인수 Graphics2D를 필드에 대입
+		- fort와 color setting
+		- gameState에 따른 분기 추가
+		- 분기에 따른 메서드 생성
+			- drawPlayScreen()
+			- drawPauseScreen()
+				- PAUSED 화명중앙 출력.
+					- 텍스트 중앙출력 utill 메서드 만들기. getXforCenteredText()
+			
+		
+	
+	
+	

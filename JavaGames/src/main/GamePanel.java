@@ -13,10 +13,7 @@ import object.SupperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
-	// drawTime test
-	int count =0 ;
-	long pas =0 ;
-	
+
 	// 화면 세팅
 	final int originalTileSize = 16; // 16x16 tile
 	final int scale = 3;
@@ -36,13 +33,18 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int worldWidth = tileSize * maxWorldCol;	// tile 갯수 * tile 사이즈
 	public final int worldHeight = tileSize * maxWorldRow;
 	
+	// GAME MODE
+	public int gameState;
+	public final int PAUSESTATE = 2;
+	public final int PLAYSTATE = 1;
+		
 	// 화면 갱신
 	int FPS = 60;
 	
 	// SYSTEM
-	public Utill utill = new Utill();										// Utility Tool
+	public Utill utill = new Utill(this);										// Utility Tool
 	public TileManager tileM = new TileManager(this);						// TileManager
-	public KeyHandler keyH = new KeyHandler();								// keyPress
+	public KeyHandler keyH = new KeyHandler(this);								// keyPress
 	public Sound music = new Sound();										// sound(BGM, ..)
 	public Sound soundEffect = new Sound();									// sound(effectSound, ..)
 	public CollisionChecker cChecker = new CollisionChecker(this);			// CollisionChecker
@@ -54,8 +56,6 @@ public class GamePanel extends JPanel implements Runnable{
 	public Player player = new Player(this, keyH);							// player
 	public SupperObject obj[] = new SupperObject[10];						// Objects, 갯수
 	
-	
-		
 	public GamePanel() {
 		
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -73,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setupGame() {
 		playMusic(0);					// BGM start
 		aSetter.setObject(); 			// objects setting
+		gameState = PLAYSTATE;			// gameMode
 	}
 	
 	public void playMusic(int i) {
@@ -86,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void playSE(int i) {
-		soundEffect.setFile(i); 	// BGM
+		soundEffect.setFile(i); 	
 		soundEffect.play();
 	}
 	
@@ -133,7 +134,20 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// 1 update : 위치 업데이트
 	public void update() {
-		player.update();
+		
+		switch(gameState) {
+		
+		case PLAYSTATE:
+			
+			player.update();
+
+			break;
+		case PAUSESTATE:
+			
+			break;
+		}
+		
+		
 	}
 	
 	// 2 draw : 화면 정보 갱신 repaint()
@@ -170,13 +184,6 @@ public class GamePanel extends JPanel implements Runnable{
 			g2.setFont(ui.godic_40);
 			g2.setColor(Color.white);
 			g2.drawString("Draw Time :"+passed , 10, 400);
-			count++;
-			pas += passed;
-			while(count	== 300) {
-				System.out.println(pas/count);
-				count = 0;
-				pas = 0;
-			}
 		}
 
 		g2.dispose();

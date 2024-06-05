@@ -5,15 +5,26 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
 	
+	GamePanel gp;
+	
+	// 이동키
 	final int UP[] = {KeyEvent.VK_W, KeyEvent.VK_UP};
 	final int DOWN[] = {KeyEvent.VK_S, KeyEvent.VK_DOWN };
 	final int LEFT[] = {KeyEvent.VK_A, KeyEvent.VK_LEFT};
 	final int RIGHT[] = {KeyEvent.VK_D, KeyEvent.VK_RIGHT};
-	final int DRAWTIME[] = {KeyEvent.VK_T};
-	
 	public boolean upPress, downPress, leftPress, rigthPress;
+	
+	// 특수키
+	final int DRAWTIME[] = {KeyEvent.VK_T};
+	final int PAUSED = KeyEvent.VK_ESCAPE;
+	
 	boolean drawTimePress = false; // check draw time
-
+	
+	
+	public KeyHandler(GamePanel gp) {
+		this.gp = gp;
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
@@ -36,6 +47,8 @@ public class KeyHandler implements KeyListener{
 		}
 		
 		drawTimePress = keySwitch(code, DRAWTIME, drawTimePress );
+		
+		changeMode(code);
 		
 	}
 
@@ -87,8 +100,20 @@ public class KeyHandler implements KeyListener{
 			}
 		};
 		return stste;
-		
 	}
 	
+	// 일시정지 or 플레이
+	public void changeMode(int code) {
+
+		if(code == PAUSED) {
+			if(gp.gameState == gp.PLAYSTATE) {
+				gp.gameState = gp.PAUSESTATE;
+				gp.stopMusic();
+			}else if(gp.gameState == gp.PAUSESTATE){
+				gp.gameState = gp.PLAYSTATE;
+				gp.playMusic(0);
+			}
+		}
+	}
 
 }

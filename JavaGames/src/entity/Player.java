@@ -133,42 +133,8 @@ public class Player extends Entity{
 	// object collision effect 오브젝트 충돌 효과 
 	public void pickUpObject(int i) {
 		
-		if(i != 999) {
-			String objectName = gp.obj[i].name;
-			
-			switch(objectName) {
-			case "Key":
-				hasKey++;
-				gp.playSE(gp.soundEffect.soundIndexList.get("coin"));
-				gp.obj[i] = null;
-				gp.ui.showMassage("열쇠를 획득하였습니다.");
-				break;
-			case "Boots":
-				gp.obj[i] = null;
-				speed += 2;
-				gp.playSE(2);
-				gp.ui.showMassage("속도 업!");
-				break;
-			case "Door":
-				if(hasKey>0) {
-					gp.playSE(gp.soundEffect.soundIndexList.get("unlock"));
-					gp.obj[i] = null;
-					hasKey--;
-				}else {
-					gp.ui.showMassage("열쇠가 없습니다.");
-					if(gp.ui.messageTimer>60 && gp.ui.messageTimer<120 ) {
-						gp.ui.showMassage("열쇠를 찾으세요!");
-					}
-				}
-				break;
-			case "Chest":
-				gp.playSE(4);					// 종료 사운드
-				createItem(i, new OBJ_Boots(gp));
-				gp.ui.gameFinished = true;		// 종료 UI
-				gp.stopMusic(); 				// BGM 종료
-				break;
-				
-			}
+		if(i != 999) {	// CollisionChecker return
+
 		}
 	}
 	

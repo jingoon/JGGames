@@ -11,9 +11,10 @@ import object.OBJ_Key;
 public class UI {
 	
 	public GamePanel gp;
+	Graphics2D g2;
 	Font godic_40 = new Font("맑은 고딕", Font.PLAIN, 40);
 	Font godic_80B = new Font("맑은 고딕", Font.BOLD, 80);
-	public BufferedImage keyImage;
+	//public BufferedImage keyImage;
 	public String message = "";
 	public Boolean messageOn = false;
 	public int messageTimer = 0;
@@ -23,9 +24,6 @@ public class UI {
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
-		OBJ_Key key = new OBJ_Key(gp);
-		keyImage = key.image;
-		
 		//Utill.printFontStyle();	// 시스템 폰트 List
 				
 	}
@@ -37,65 +35,30 @@ public class UI {
 	
 	public void draw(Graphics2D g2) {
 		
+		this.g2 = g2;
 		
-		if(gameFinished) {
+		g2.setFont(godic_40);
+		g2.setColor(Color.white);
+		
+		if(gp.gameState == gp.PLAYSTATE) {
+			drawPlayState();
 			
-			String text;
-			int x, y, length;
+		}else if (gp.gameState == gp.PAUSESTATE) {
+			drawPauseState();
 			
-			// GAME FINISHED
-			text = "GAME FINISHED !!";
-			g2.setFont(godic_40);
-			g2.setColor(Color.white);
-			length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-			x = gp.screenWidth/2 - length/2;
-			y = gp.screenHeight/2 - gp.tileSize*3;		
-			g2.drawString(text, x,y);
-
-			// success time
-			text = "Your Time is : "+ dFormat.format(gameTime)+"!";
-			length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-			x = gp.screenWidth/2 - length/2;
-			y = gp.screenHeight/2 + gp.tileSize*4;
-			g2.drawString(text, x,y);
-
-			// Congratulation!
-			g2.setFont(godic_80B);
-			g2.setColor(Color.yellow);
-			text = "Congratulation!";
-			length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-			x = gp.screenWidth/2 - length/2;
-			y = gp.screenHeight/2 + gp.tileSize*2;
-			g2.drawString(text, x,y);
-			
-			
-			gp.gameThread =null;
-		}else {
-			
-			// have key
-			g2.setFont(godic_40);
-			g2.setColor(Color.white);
-			g2.drawImage(keyImage, gp.tileSize/2, gp.tileSize/2, null);
-			g2.drawString(" = "+gp.player.hasKey, gp.tileSize+(gp.tileSize/2), gp.tileSize+(gp.tileSize/3));
-			
-			// game time
-			gameTime += (double)1/gp.FPS;
-			g2.drawString("Time: "+dFormat.format(gameTime), gp.screenWidth - gp.tileSize*5, gp.tileSize*2);
-			
-			// pickup message
-			if(messageOn) {
-				messageTimer++;
-				g2.setFont(g2.getFont().deriveFont(30F));
-				g2.setColor(Color.PINK);
-				g2.drawString(message, gp.tileSize/2, gp.tileSize*5);			
-				
-				if(messageTimer > gp.FPS * 2) {	//2초
-					messageTimer = 0;
-					messageOn = false;
-				}
-			}
 		}
 		
+	}
+	// 일시정지 UI
+	public void drawPauseState() {
+		String text = "PAUSED";
+		g2.setFont(g2.getFont().deriveFont(80F));
+		int x = gp.utill.getXforCenteredText(text, g2);
+		int y = gp.screenHeight/2;
+		g2.drawString(text, x, y);
+	}
+	// 플레이 UI
+	public void drawPlayState() {
 		
 	}
 	
