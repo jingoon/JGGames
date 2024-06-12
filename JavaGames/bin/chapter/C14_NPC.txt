@@ -1,0 +1,8 @@
+chapter 14.
+
+	NPC
+	
+1. NPC 이미지 등록 
+2. NPC class 생성
+3. NPC 충돌 설정
+4. NPC 이동 설정 (random move)

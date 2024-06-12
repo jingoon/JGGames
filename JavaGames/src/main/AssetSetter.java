@@ -1,5 +1,6 @@
 package main;
 
+import entity.NPC_OldMan;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
 import object.OBJ_Door;
@@ -11,6 +12,11 @@ public class AssetSetter {
 	
 	public AssetSetter(GamePanel gp) {
 		this.gp = gp;
+	}
+	
+	public void setNpc() {
+		gp.npc[0] = new NPC_OldMan(gp);
+		gp.npc[0].name = "할아버지";
 	}
 	
 	public void setObject() {

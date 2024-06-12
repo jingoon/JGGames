@@ -4,10 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.LinkedList;
-
 import javax.swing.JPanel;
-
+import entity.Entity;
 import entity.Player;
 import object.SupperObject;
 import tile.TileManager;
@@ -55,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 	// ENTITY AND OBJECT
 	public Player player = new Player(this, keyH);							// player
 	public SupperObject obj[] = new SupperObject[10];						// Objects, 갯수
+	public Entity npc[] = new Entity[10];									// NPC, 갯수
 	
 	public GamePanel() {
 		
@@ -68,16 +67,18 @@ public class GamePanel extends JPanel implements Runnable{
 		this.addKeyListener(keyH);
 		this.setFocusable(true); // with this, this GamePanel can be "focused" to receive key input
 		
+		music.setFile(0); 				// BGM
+		
 	}
 	
 	public void setupGame() {
-		playMusic(0);					// BGM start
+		playMusic();					// BGM start
 		aSetter.setObject(); 			// objects setting
+		aSetter.setNpc(); 				// NPC setting
 		gameState = PLAYSTATE;			// gameMode
 	}
 	
-	public void playMusic(int i) {
-		music.setFile(i); 	// BGM
+	public void playMusic() {
 		music.play();
 		music.loop();
 	}
@@ -136,15 +137,20 @@ public class GamePanel extends JPanel implements Runnable{
 	public void update() {
 		
 		switch(gameState) {
-		
-		case PLAYSTATE:
-			
-			player.update();
-
-			break;
-		case PAUSESTATE:
-			
-			break;
+			case PLAYSTATE:
+				
+				player.update();
+				for(int i = 0; i < npc.length; i++ ) {
+					if(npc[i]== null) {
+						continue;
+					}
+					npc[i].update();
+				}
+	
+				break;
+			case PAUSESTATE:
+				
+				break;
 		}
 		
 		
@@ -163,12 +169,20 @@ public class GamePanel extends JPanel implements Runnable{
 		// 타일 드로우
 		tileM.draw(g2);		
 		
-		// 오브젝트(아이템?) 드로우
+		// 오브젝트(아이템, 문, 상자 등) 드로우
 		for(int i = 0; i < obj.length; i++ ) {
 			if(obj[i]== null) {
 				continue;
 			}
-			obj[i].drow(g2, this);
+			obj[i].draw(g2, this);
+		}
+		
+		// 엔피씨 드로우
+		for(int i = 0; i < npc.length; i++ ) {
+			if(npc[i]== null) {
+				continue;
+			}
+			npc[i].draw(g2);
 		}
 		
 		// 케릭터 드로우
@@ -184,6 +198,12 @@ public class GamePanel extends JPanel implements Runnable{
 			g2.setFont(ui.godic_40);
 			g2.setColor(Color.white);
 			g2.drawString("Draw Time :"+passed , 10, 400);
+		}
+		// test BGM on/off
+		if(!keyH.bgmonoffPress) {
+			playMusic();
+		}else {
+			stopMusic();
 		}
 
 		g2.dispose();

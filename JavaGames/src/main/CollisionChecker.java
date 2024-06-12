@@ -59,6 +59,70 @@ public class CollisionChecker {
 		return index;
 	}
 	
+	// collision NPC & PC
+	public int checkNPC(Entity entity, boolean playerTf) {
+		int index = 999;
+		
+		entity.solidArea.x += entity.worldX;
+		entity.solidArea.y += entity.worldY;
+		
+		Entity taget;
+		if(playerTf) {
+			for(int i=0; i < gp.npc.length; i++) {
+				taget = gp.npc[i];
+				if(taget == null) {
+					continue;
+				}
+				checkPC(entity, taget);
+				if(entity.collisionOn) {
+					index = i;
+				}
+			}
+			
+		}else {
+			taget = gp.player;
+			checkPC(entity, taget);
+		}
+				
+		// entity(player, NPC) solidArea position 초기화
+		entity.solidArea.x = entity.solidAreaDefaultX;
+		entity.solidArea.y = entity.solidAreaDefaultY;
+		
+		return index;
+	}
+	
+	// collision PC
+	public void checkPC(Entity entity, Entity taget) {
+				
+		taget.solidArea.x += taget.worldX;
+		taget.solidArea.y += taget.worldY;
+		
+		// 방향에 따라 미리 감지하여 낑기지 안도록 한다.
+		switch(entity.direction) {
+		case "up":
+			entity.solidArea.y -= entity.speed;
+			break;
+		case "down":
+			entity.solidArea.y += entity.speed;
+			break;
+		case "left":
+			entity.solidArea.x -= entity.speed;
+			break;
+		case "right":
+			entity.solidArea.x += entity.speed;
+			break;
+		}
+		
+		if(taget.solidArea.intersects(entity.solidArea)) {
+			entity.collisionOn = true;
+			
+		}
+		// object solidArea position 초기화
+		taget.solidArea.x = taget.solidAreaDefaultX;
+		taget.solidArea.y = taget.solidAreaDefaultY;
+		
+	}
+	
 	// collision Tiles
 	public void checkTile(Entity entity) {
 		

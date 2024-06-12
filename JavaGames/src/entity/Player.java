@@ -3,26 +3,19 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.Utill;
-import object.OBJ_Boots;
 import object.SupperObject;
 
 public class Player extends Entity{
 
-	GamePanel gp;
-	KeyHandler keyH;
-	public int hasKey = 0;
+	KeyHandler keyH;					// 키보드 액션
 	
 	public final int screenX, screenY;	// 스크린에서 케릭터 위치
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
-		this.gp = gp;
+		super(gp);
 		this.keyH = keyH;
 		
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);		//화면 가로 가운데
@@ -47,7 +40,7 @@ public class Player extends Entity{
 		//스타팅 포인트(worldMap)
 		worldX = gp.worldWidth/2 - gp.tileSize*2;		
 		worldY = gp.worldHeight/2 - gp.tileSize*4;	
-				
+		//randomRegen();	
 		speed = 4;
 		direction = "down";
 		moveChangeSpeed = 12;
@@ -55,31 +48,24 @@ public class Player extends Entity{
 	}
 	
 	public void getPlayerImage() {
-		up1 = setup("boy_up_1");
-		up2 = setup("boy_up_2");
-		down1 = setup("boy_down_1");
-		down2 = setup("boy_down_2");
-		right1 = setup("boy_right_1");
-		right2 = setup("boy_right_2");
-		left1 = setup("boy_left_1");
-		left2 = setup("boy_left_2");
+		up1 = setup("/player/boy_up_1");
+		up2 = setup("/player/boy_up_2");
+		down1 = setup("/player/boy_down_1");
+		down2 = setup("/player/boy_down_2");
+		right1 = setup("/player/boy_right_1");
+		right2 = setup("/player/boy_right_2");
+		left1 = setup("/player/boy_left_1");
+		left2 = setup("/player/boy_left_2");
 				
 	}
 	
-	public BufferedImage setup(String pathName) {
+	public void update() {
 		
-		BufferedImage image = null;
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/"+pathName+".png"));
-			image = gp.utill.scaleImage(image, gp.tileSize, gp.tileSize);
-		} catch (IOException e) {
-			e.printStackTrace();
+		delay++;
+		if(gp.keyH.num1 && delay>60) {
+			blink();
 		}
 		
-		return image;
-	}
-	public void update() {
 		// movekey를 눌러야지만 움직임. 
 		if(gp.utill.moveKeyPress(keyH)) {
 		
@@ -96,12 +82,13 @@ public class Player extends Entity{
 			
 			
 			// CHECK TILE COLLISION 타일 충돌감지
-			collisionOn = false; 		//안쓰면 낑김.
+			collisionOn = false; 		// 초기화용
 			gp.cChecker.checkTile(this);
 			
 			// CHECK OBJECT COLLISION object 충돌감지
 			int objectIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objectIndex);
+			int npcIndex = gp.cChecker.checkNPC(this, true);
 			
 			// IF COLLISION IS FALSE. PLAYER CAN MOVE
 			if(!collisionOn) {
@@ -184,6 +171,12 @@ public class Player extends Entity{
 		
 		g2.drawImage(image, screenX, screenY, null);
 		
+	}
+	
+	// test key1
+	public void blink() {
+		randomRegen();
+		delay = 0;
 	}
 	
 }

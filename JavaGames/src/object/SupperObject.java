@@ -33,7 +33,7 @@ public class SupperObject {
 		}
 	}
 	
-	public void drow(Graphics2D g2, GamePanel gp) {
+	public void draw(Graphics2D g2, GamePanel gp) {
 		
 		int screenX = worldX - gp.player.worldX + gp.player.screenX;	 
 		int screenY = worldY - gp.player.worldY + gp.player.screenY;	

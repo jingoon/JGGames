@@ -3,6 +3,7 @@ package main;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Utill {
 	GamePanel gp;
@@ -44,7 +45,7 @@ public class Utill {
 		return scaledImage;
 	}
 	
-	// 
+	// 텍스트 가운데 맞춤
 	public int getXforCenteredText(String txet, Graphics2D g2) {
 		
 		// 글자길이
@@ -54,4 +55,10 @@ public class Utill {
 		return x;
 	}
 	
+	// 지도 랜덤위치 x
+	public int getRandomPoint(int maximum) {
+		Random r = new Random();
+		int x = r.nextInt(maximum);
+		return x;
+	}
 }

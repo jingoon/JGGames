@@ -14,12 +14,16 @@ public class KeyHandler implements KeyListener{
 	final int RIGHT[] = {KeyEvent.VK_D, KeyEvent.VK_RIGHT};
 	public boolean upPress, downPress, leftPress, rigthPress;
 	
+	final int NUM_1 = KeyEvent.VK_1;
+	public boolean num1 = false;
+	
 	// 특수키
 	final int DRAWTIME[] = {KeyEvent.VK_T};
 	final int PAUSED = KeyEvent.VK_ESCAPE;
+	final int BGMONOFF = KeyEvent.VK_M;
 	
 	boolean drawTimePress = false; // check draw time
-	
+	boolean bgmonoffPress = true; // BGM on/off
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
@@ -47,8 +51,13 @@ public class KeyHandler implements KeyListener{
 		}
 		
 		drawTimePress = keySwitch(code, DRAWTIME, drawTimePress );
+		bgmonoffPress = keySwitch(code, BGMONOFF, bgmonoffPress );
 		
 		changeMode(code);
+		
+		if(code == KeyEvent.VK_1) {
+			num1 = true;
+		}
 		
 	}
 
@@ -67,6 +76,9 @@ public class KeyHandler implements KeyListener{
 		}
 		if(linerSearch(code, RIGHT)) {
 			rigthPress = false;
+		}
+		if(code == KeyEvent.VK_1) {
+			num1 = false;
 		}
 		
 	}
@@ -102,16 +114,30 @@ public class KeyHandler implements KeyListener{
 		return stste;
 	}
 	
+	// 키 스위치
+	private boolean keySwitch(int code, int key, boolean stste) {
+		
+		if(key == code) {
+			if(stste) {
+				stste = false;
+			}else{
+				stste = true;
+			}
+			
+		}
+		return stste;
+	}
+	
 	// 일시정지 or 플레이
 	public void changeMode(int code) {
 
 		if(code == PAUSED) {
 			if(gp.gameState == gp.PLAYSTATE) {
 				gp.gameState = gp.PAUSESTATE;
-				gp.stopMusic();
+				//gp.stopMusic();
 			}else if(gp.gameState == gp.PAUSESTATE){
 				gp.gameState = gp.PLAYSTATE;
-				gp.playMusic(0);
+				//gp.playMusic();
 			}
 		}
 	}
