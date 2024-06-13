@@ -48,14 +48,14 @@ public class Player extends Entity{
 	}
 	
 	public void getPlayerImage() {
-		up1 = setup("/player/boy_up_1");
-		up2 = setup("/player/boy_up_2");
-		down1 = setup("/player/boy_down_1");
-		down2 = setup("/player/boy_down_2");
-		right1 = setup("/player/boy_right_1");
-		right2 = setup("/player/boy_right_2");
-		left1 = setup("/player/boy_left_1");
-		left2 = setup("/player/boy_left_2");
+		up1 = setupImage("/player/boy_up_1");
+		up2 = setupImage("/player/boy_up_2");
+		down1 = setupImage("/player/boy_down_1");
+		down2 = setupImage("/player/boy_down_2");
+		right1 = setupImage("/player/boy_right_1");
+		right2 = setupImage("/player/boy_right_2");
+		left1 = setupImage("/player/boy_left_1");
+		left2 = setupImage("/player/boy_left_2");
 				
 	}
 	
@@ -80,7 +80,6 @@ public class Player extends Entity{
 				direction = "right";
 			}
 			
-			
 			// CHECK TILE COLLISION 타일 충돌감지
 			collisionOn = false; 		// 초기화용
 			gp.cChecker.checkTile(this);
@@ -88,30 +87,12 @@ public class Player extends Entity{
 			// CHECK OBJECT COLLISION object 충돌감지
 			int objectIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objectIndex);
-			int npcIndex = gp.cChecker.checkNPC(this, true);
+			
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc, true);
+			interactNPC(npcIndex);
 			
 			// IF COLLISION IS FALSE. PLAYER CAN MOVE
-			if(!collisionOn) {
-				// 이동
-				switch(direction) {
-					case("up"):  	worldY -= speed;	break;
-					case("down"): 	worldY += speed;	break;
-					case("left"): 	worldX -= speed;	break;
-					case("right"): 	worldX += speed;	break;
-				}
-				
-			}
-			
-			// 객체 keyPress IMG변화
-			spriterCount++;
-			if(spriterCount>=moveChangeSpeed) {
-				if(imageNumber == 1) {
-					imageNumber = 2;
-				}else if(imageNumber == 2) {
-					imageNumber = 1;
-				}
-				spriterCount = 0;
-			}
+			moveToCollision();
 		
 		}
 				
@@ -122,6 +103,13 @@ public class Player extends Entity{
 		
 		if(i != 999) {	// CollisionChecker return
 
+		}
+	}
+	// npc와의 충돌 효과
+	public void interactNPC(int i) {
+		if(i != 999) {	// CollisionChecker return
+			
+			System.out.println("엔피씨와 충돌:"+ i+" ::: "+gp.npc[i].name);
 		}
 	}
 	

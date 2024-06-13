@@ -17,6 +17,9 @@ public class AssetSetter {
 	public void setNpc() {
 		gp.npc[0] = new NPC_OldMan(gp);
 		gp.npc[0].name = "할아버지";
+		gp.npc[0].worldX = gp.worldWidth/2 - gp.tileSize*3;		
+		gp.npc[0].worldY = gp.worldHeight/2 - gp.tileSize*4;
+		//gp.npc[0].randomRegen();
 	}
 	
 	public void setObject() {

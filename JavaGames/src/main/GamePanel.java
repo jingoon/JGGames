@@ -138,8 +138,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		switch(gameState) {
 			case PLAYSTATE:
-				
+				// 플레이어
 				player.update();
+				// NPC
 				for(int i = 0; i < npc.length; i++ ) {
 					if(npc[i]== null) {
 						continue;
@@ -158,7 +159,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// 2 draw : 화면 정보 갱신 repaint()
 	public void paintComponent(Graphics g) {
-		
+		// 그리기, 늦게 그릴수록 상위에 겹친다.
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D)g;

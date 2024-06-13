@@ -15,7 +15,8 @@ public abstract class Entity {
 	public String name;
 	
 	public int worldX, worldY;	// worldMap에서 객체 좌상단 좌표.
-	public int speed;	// 이동거리
+	public int speed;		// 이동거리 : 높을 수록 멀리감
+	public int actionSpeed;	// 행동속도, update 속도 
 	
 	public BufferedImage up1, up2, down1, down2, right1, right2, left1, left2; // img
 	public String direction; // 상하좌우
@@ -37,11 +38,12 @@ public abstract class Entity {
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
+		direction = "down";
 		solidArea = new Rectangle(gp.tileSize, gp.tileSize);
 	}
 	
 	// 이미지 셋업
-	public BufferedImage setup(String pathName) {
+	public BufferedImage setupImage(String pathName) {
 		
 		BufferedImage image = null;
 		
@@ -53,6 +55,52 @@ public abstract class Entity {
 		}
 		
 		return image;
+	}
+	
+	// 기본행동
+	public void setAction() {}; 
+	
+	// 프레임당 체크할 것들.
+	public void update() {
+		
+		// 기본행동 설정
+		setAction();
+		
+		// 타일 충돌감지
+		collisionOn = false; 		//	초기화용
+		gp.cChecker.checkTile(this);
+		// object 충돌감지
+		gp.cChecker.checkObject(this, false);
+		// 플레이어와 충돌 설정
+		gp.cChecker.checkEntity(this, gp.player, false); // player index is 0
+		
+		// 충돌하면 움직이지 않는다.
+		moveToCollision();
+	
+	}
+	
+	// 충돌과 이동, 이미지 변화
+	protected void moveToCollision() {
+		if(!collisionOn) {
+			// 이동
+			switch(direction) {
+				case("up"):  	worldY -= speed;	break;
+				case("down"): 	worldY += speed;	break;
+				case("left"): 	worldX -= speed;	break;
+				case("right"): 	worldX += speed;	break;
+			}
+			
+			// 객체 keyPress IMG변화
+			spriterCount++;
+			if(spriterCount>=moveChangeSpeed) {
+				if(imageNumber == 1) {
+					imageNumber = 2;
+				}else if(imageNumber == 2) {
+					imageNumber = 1;
+				}
+				spriterCount = 0;
+			}
+		}
 	}
 	
 	// 랜덤 위치 
@@ -72,6 +120,7 @@ public abstract class Entity {
 		}
 	}
 
+	// 그리기
 	public void draw(Graphics2D g2) {
 
 		BufferedImage image = null;
@@ -123,6 +172,5 @@ public abstract class Entity {
 		}
 		
 	}
-	
-	public abstract void update();
+
 }

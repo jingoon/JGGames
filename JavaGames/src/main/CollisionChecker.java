@@ -41,11 +41,11 @@ public class CollisionChecker {
 			}
 			
 			if(gp.obj[i].solidArea.intersects(entity.solidArea)) {
-				if(gp.obj[i].collision) {
-					entity.collisionOn = true;
+				if(gp.obj[i].collision) {		// object가 겹칠수 없다면.(문과 바닥차이)
+					entity.collisionOn = true;	// 플레이어의 충돌설정 
 				}
 				if(playerTf) {
-					index = i;				
+					index = i;		// 플레이어와 충돌한 object index 반환				
 				}
 			}
 			// object solidArea position 초기화
@@ -59,31 +59,15 @@ public class CollisionChecker {
 		return index;
 	}
 	
-	// collision NPC & PC
-	public int checkNPC(Entity entity, boolean playerTf) {
+	// collision NPC & PLAYER & MONSTER
+	public int checkEntity(Entity entity, Entity[] taget, boolean playerTf) {
 		int index = 999;
 		
 		entity.solidArea.x += entity.worldX;
 		entity.solidArea.y += entity.worldY;
 		
-		Entity taget;
-		if(playerTf) {
-			for(int i=0; i < gp.npc.length; i++) {
-				taget = gp.npc[i];
-				if(taget == null) {
-					continue;
-				}
-				checkPC(entity, taget);
-				if(entity.collisionOn) {
-					index = i;
-				}
-			}
-			
-		}else {
-			taget = gp.player;
-			checkPC(entity, taget);
-		}
-				
+		index = checkCollision(entity, taget, index);
+
 		// entity(player, NPC) solidArea position 초기화
 		entity.solidArea.x = entity.solidAreaDefaultX;
 		entity.solidArea.y = entity.solidAreaDefaultY;
@@ -91,35 +75,51 @@ public class CollisionChecker {
 		return index;
 	}
 	
-	// collision PC
-	public void checkPC(Entity entity, Entity taget) {
+	public int checkEntity(Entity entity, Entity taget, boolean playerTf) {
+		Entity[] oneEntity = new Entity[1]; // ex) 플레이어
+		oneEntity[0] = taget;
+		return checkEntity(entity, oneEntity, playerTf);
+	}
+	
+	// collision checkCollision
+	public int checkCollision(Entity entity, Entity[] taget, int index) {
+		
+		
+		for(int i=0; i < taget.length; i++) {
+			if(taget[i] == null) {
+				continue;
+			}
+			taget[i].solidArea.x += taget[i].worldX;
+			taget[i].solidArea.y += taget[i].worldY;
+			
+			// 방향에 따라 미리 감지하여 낑기지 안도록 한다.
+			switch(entity.direction) {
+			case "up":
+				entity.solidArea.y -= entity.speed;
+				break;
+			case "down":
+				entity.solidArea.y += entity.speed;
+				break;
+			case "left":
+				entity.solidArea.x -= entity.speed;
+				break;
+			case "right":
+				entity.solidArea.x += entity.speed;
+				break;
+			}
+			
+			if(taget[i].solidArea.intersects(entity.solidArea)) {
+				entity.collisionOn = true;
+				index = i;	// return  npc index
 				
-		taget.solidArea.x += taget.worldX;
-		taget.solidArea.y += taget.worldY;
-		
-		// 방향에 따라 미리 감지하여 낑기지 안도록 한다.
-		switch(entity.direction) {
-		case "up":
-			entity.solidArea.y -= entity.speed;
-			break;
-		case "down":
-			entity.solidArea.y += entity.speed;
-			break;
-		case "left":
-			entity.solidArea.x -= entity.speed;
-			break;
-		case "right":
-			entity.solidArea.x += entity.speed;
-			break;
-		}
-		
-		if(taget.solidArea.intersects(entity.solidArea)) {
-			entity.collisionOn = true;
+			}
+			// object solidArea position 초기화
+			taget[i].solidArea.x = taget[i].solidAreaDefaultX;
+			taget[i].solidArea.y = taget[i].solidAreaDefaultY;
 			
 		}
-		// object solidArea position 초기화
-		taget.solidArea.x = taget.solidAreaDefaultX;
-		taget.solidArea.y = taget.solidAreaDefaultY;
+		
+		return index;
 		
 	}
 	
