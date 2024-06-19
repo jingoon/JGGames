@@ -1,0 +1,29 @@
+chapter 15.
+
+	Dialogue
+	
+	- NPC와 대화하기
+	
+1. 대화 상태 설정
+	- game panel에 DIALOGUESTATE 값 추가
+2. NPC와 충돌 후 대화 상태 전환
+	- player에서 npc 충돌감지 메서드 생성
+3 UI class
+	gameState에 따른 UI 구성 분기
+		- DIALOGUESTATE 추가 
+	sub window 생성
+		- 위치 설정(x, y, w, h)
+		- 배경색 설정 (RGB 사용: 4번째 값이 불투명값 0~255)
+		- 태두리 설정 (Stroke(new BasicStroke(5)))
+		- window 모양 설정 (둥근 사각형: fillRaundRect)
+	대화 텍스트 설정
+		- Entity에 Sting dialogues 배열 필드 추가
+		- 각 NPC에서 dialogues에 텍스트 추가
+		- 대화의 줄바꿈 설정
+5. npc 대화 -> UI -> player
+6. NPC와 player가 충돌하면  NPC의 방향을 player방향으로 변경
+	- player direction을 이용
+	
+
+
+

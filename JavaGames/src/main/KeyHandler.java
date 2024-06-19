@@ -14,16 +14,18 @@ public class KeyHandler implements KeyListener{
 	final int RIGHT[] = {KeyEvent.VK_D, KeyEvent.VK_RIGHT};
 	public boolean upPress, downPress, leftPress, rigthPress;
 	
-	final int NUM_1 = KeyEvent.VK_1;
-	public boolean num1 = false;
-	
 	// 특수키
-	final int DRAWTIME[] = {KeyEvent.VK_T};
-	final int PAUSED = KeyEvent.VK_ESCAPE;
-	final int BGMONOFF = KeyEvent.VK_M;
+	final int BLINK = KeyEvent.VK_F1;			// blink 
+	final int DRAWTIME[] = {KeyEvent.VK_T};		// 그리기 시간 화면표시(성능)
+	//final int PAUSED = KeyEvent.VK_ESCAPE;		// ESC 일시정지모드 전환
+	final int CANCEL = KeyEvent.VK_ESCAPE;		// 취소 (플레이모드전환)	
+	final int BGMONOFF = KeyEvent.VK_M;			// 배경음악 켬/끔
+	final int NEXT = KeyEvent.VK_SPACE;		// 대화창 열기/다음대화
 	
+	public boolean blinkPress = false;
 	boolean drawTimePress = false; // check draw time
 	boolean bgmonoffPress = true; // BGM on/off
+	public boolean nextPress = false;
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
@@ -49,15 +51,20 @@ public class KeyHandler implements KeyListener{
 		if(linerSearch(code, RIGHT)) {
 			rigthPress = true;
 		}
+		if(linerSearch(code, BLINK)) {
+			blinkPress = true;
+		}
+		if(linerSearch(code, NEXT)) {
+			nextPress = true;
+		}
 		
 		drawTimePress = keySwitch(code, DRAWTIME, drawTimePress );
 		bgmonoffPress = keySwitch(code, BGMONOFF, bgmonoffPress );
 		
 		changeMode(code);
 		
-		if(code == KeyEvent.VK_1) {
-			num1 = true;
-		}
+		
+		
 		
 	}
 
@@ -77,15 +84,19 @@ public class KeyHandler implements KeyListener{
 		if(linerSearch(code, RIGHT)) {
 			rigthPress = false;
 		}
-		if(code == KeyEvent.VK_1) {
-			num1 = false;
+		if(linerSearch(code, BLINK)) {
+			blinkPress = false;
 		}
+		if(linerSearch(code, NEXT)) {
+			nextPress = false;
+		}
+		
 		
 	}
 	
-	// 키 할당
+	// 키 할당	
 	public boolean linerSearch(int code, int[] key) {
-		
+
 		boolean codeInKeyList = false;
 		
 		for (int value : key) {
@@ -94,8 +105,12 @@ public class KeyHandler implements KeyListener{
 				break;
 			}
 		};
-		
 		return codeInKeyList;
+	}
+	public boolean linerSearch(int code, int key) {
+		int keys[] = new int[1];
+		keys[0] = key;
+		return linerSearch(code, keys);
 	}
 	
 	// 키 스위치
@@ -116,28 +131,27 @@ public class KeyHandler implements KeyListener{
 	
 	// 키 스위치
 	private boolean keySwitch(int code, int key, boolean stste) {
-		
-		if(key == code) {
-			if(stste) {
-				stste = false;
-			}else{
-				stste = true;
-			}
-			
-		}
-		return stste;
+	
+		int keys[] = new int[1];
+		keys[0] = key;
+		return keySwitch(code, keys, stste);
 	}
 	
 	// 일시정지 or 플레이
 	public void changeMode(int code) {
 
-		if(code == PAUSED) {
+		if(code == CANCEL) {
 			if(gp.gameState == gp.PLAYSTATE) {
 				gp.gameState = gp.PAUSESTATE;
-				//gp.stopMusic();
 			}else if(gp.gameState == gp.PAUSESTATE){
 				gp.gameState = gp.PLAYSTATE;
-				//gp.playMusic();
+			}else if (gp.gameState == gp.DIALOGUESTATE) {
+				gp.gameState = gp.PLAYSTATE;
+			}
+		}
+		if(code == NEXT) {
+			if (gp.gameState == gp.DIALOGUESTATE) {
+				gp.gameState = gp.PLAYSTATE;
 			}
 		}
 	}

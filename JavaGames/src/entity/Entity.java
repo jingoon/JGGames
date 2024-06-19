@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 
-public abstract class Entity {
+public class Entity {
 	
 	public GamePanel gp;
 	public String name;
@@ -28,13 +28,15 @@ public abstract class Entity {
 	// moveChangeSpeed가 60이면 초당 1번 변환(FPS=60 일때)
 	// moveChangeSpeed * 초당변환횟수 = FPS
 	public int moveChangeSpeed;	
-	// 행동 딜레이
-	public int delay = 0;
 	
 	// 충돌세팅
 	public boolean collisionOn = false;
 	public Rectangle solidArea;	
 	public int solidAreaDefaultX, solidAreaDefaultY; 
+	
+	// 대화 (DIALOGUE)
+	public String[] dialogues = new String[20];			// 대화 배열
+	public int dialoguesIndex;							// 대화 인덱스
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -58,25 +60,35 @@ public abstract class Entity {
 	}
 	
 	// 기본행동
-	public void setAction() {}; 
+	public void setAction() {};
 	
-	// 프레임당 체크할 것들.
-	public void update() {
+	// 대화 가져오기
+	public void speak() {
+		gp.ui.currentDialogue = dialogues[dialoguesIndex];
+		dialoguesIndex++;
+		if(dialogues[dialoguesIndex] == null) {
+			dialoguesIndex = 0;
+		}
 		
-		// 기본행동 설정
-		setAction();
+	}
 		
-		// 타일 충돌감지
-		collisionOn = false; 		//	초기화용
-		gp.cChecker.checkTile(this);
-		// object 충돌감지
-		gp.cChecker.checkObject(this, false);
-		// 플레이어와 충돌 설정
-		gp.cChecker.checkEntity(this, gp.player, false); // player index is 0
-		
-		// 충돌하면 움직이지 않는다.
-		moveToCollision();
-	
+	// 플레이어와 충돌시 방향 고정, 잠깐 일시정지
+	public void stopNPC() {
+		switch (gp.player.direction) {
+			case "up": 				
+				direction = "down";
+				break;
+			case "down": 				
+				direction = "up";
+				break;
+			case "right": 				
+				direction = "left";
+				break;
+			case "left": 				
+				direction = "right";
+				break;
+		}
+		actionSpeed = 0;
 	}
 	
 	// 충돌과 이동, 이미지 변화
@@ -118,6 +130,25 @@ public abstract class Entity {
 			worldX = x *gp.tileSize;
 			worldY = y *gp.tileSize;
 		}
+	}
+	
+	// 프레임당 체크할 것들.
+	public void update() {
+		
+		// 기본행동 설정
+		setAction();
+		
+		// 타일 충돌감지
+		collisionOn = false; 		//	초기화용
+		gp.cChecker.checkTile(this);
+		// object 충돌감지
+		gp.cChecker.checkObject(this, false);
+		// 플레이어와 충돌 설정
+		gp.cChecker.checkEntity(this, gp.player, false); // player index is 0
+		
+		// 충돌하면 움직이지 않는다.
+		moveToCollision();
+	
 	}
 
 	// 그리기

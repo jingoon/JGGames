@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 
-public class SupperObject {
+public class SuperObject {
 	
 	public BufferedImage image;
 	public String name;

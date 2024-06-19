@@ -6,13 +6,16 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.KeyHandler;
-import object.SupperObject;
+import object.SuperObject;
+import skill.Blink;
+import skill.SuperSkill;
 
 public class Player extends Entity{
 
 	KeyHandler keyH;					// 키보드 액션
 	
 	public final int screenX, screenY;	// 스크린에서 케릭터 위치
+	public SuperSkill blink;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
@@ -33,6 +36,9 @@ public class Player extends Entity{
 		
 		setDefaultValues();
 		getPlayerImage();
+		
+		//test
+		blink = new Blink(this);
 				
 	}
 	
@@ -60,10 +66,9 @@ public class Player extends Entity{
 	}
 	
 	public void update() {
-		
-		delay++;
-		if(gp.keyH.num1 && delay>60) {
-			blink();
+		blink.delay++;
+		if(keyH.blinkPress) {
+			blink.start();
 		}
 		
 		// movekey를 눌러야지만 움직임. 
@@ -101,27 +106,22 @@ public class Player extends Entity{
 	// object collision effect 오브젝트 충돌 효과 
 	public void pickUpObject(int i) {
 		
-		if(i != 999) {	// CollisionChecker return
+		if(i != 999) {	
 
 		}
 	}
 	// npc와의 충돌 효과
 	public void interactNPC(int i) {
-		if(i != 999) {	// CollisionChecker return
-			
-			System.out.println("엔피씨와 충돌:"+ i+" ::: "+gp.npc[i].name);
+		if(i != 999) {
+			gp.npc[i].stopNPC();
+			if(gp.keyH.nextPress) {
+				gp.gameState = gp.DIALOGUESTATE;
+				gp.npc[i].speak();
+			}
 		}
+		//gp.keyH.nextPress = false;
 	}
-	
-	// pickUpObject() 호출 시 해당 아이템이 사라지고 새로운 아이템 생성
-	private void createItem(int index, SupperObject item) {
-		int x = gp.obj[index].worldX;
-		int y = gp.obj[index].worldY;
-		gp.obj[index] = null;
-		gp.obj[index] = item;
-		gp.obj[index].update(x+gp.tileSize, y+gp.tileSize);
-	}
-	
+
 	public void draw(Graphics2D g2) {
 
 		BufferedImage image = null;
@@ -161,10 +161,13 @@ public class Player extends Entity{
 		
 	}
 	
-	// test key1
-	public void blink() {
-		randomRegen();
-		delay = 0;
+	// pickUpObject() 호출 시 해당 아이템이 사라지고 새로운 아이템 생성
+	private void createItem(int index, SuperObject item) {
+		int x = gp.obj[index].worldX;
+		int y = gp.obj[index].worldY;
+		gp.obj[index] = null;
+		gp.obj[index] = item;
+		gp.obj[index].update(x+gp.tileSize, y+gp.tileSize);
 	}
 	
 }

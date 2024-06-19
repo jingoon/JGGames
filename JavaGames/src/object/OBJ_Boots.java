@@ -2,7 +2,7 @@ package object;
 
 import main.GamePanel;
 
-public class OBJ_Boots extends SupperObject{
+public class OBJ_Boots extends SuperObject{
 	
 	GamePanel gp;
 

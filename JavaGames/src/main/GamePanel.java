@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import entity.Entity;
 import entity.Player;
-import object.SupperObject;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -33,27 +33,28 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// GAME MODE
 	public int gameState;
-	public final int PAUSESTATE = 2;
 	public final int PLAYSTATE = 1;
+	public final int PAUSESTATE = 2;
+	public final int DIALOGUESTATE = 3;
 		
 	// 화면 갱신
 	int FPS = 60;
 	
 	// SYSTEM
-	public Utill utill = new Utill(this);										// Utility Tool
-	public TileManager tileM = new TileManager(this);						// TileManager
-	public KeyHandler keyH = new KeyHandler(this);								// keyPress
-	public Sound music = new Sound();										// sound(BGM, ..)
-	public Sound soundEffect = new Sound();									// sound(effectSound, ..)
-	public CollisionChecker cChecker = new CollisionChecker(this);			// CollisionChecker
-	public AssetSetter aSetter = new AssetSetter(this);						// object setUp
-	public UI ui = new UI(this);											// User InterFace(Screen Text,pick up Text, ..)
-	public Thread gameThread;														// Thread
+	public Utill utill = new Utill(this);							// Utility Tool
+	public TileManager tileM = new TileManager(this);				// TileManager
+	public KeyHandler keyH = new KeyHandler(this);					// keyPress
+	public Sound music = new Sound();								// sound(BGM, ..)
+	public Sound soundEffect = new Sound();							// sound(effectSound, ..)
+	public CollisionChecker cChecker = new CollisionChecker(this);	// CollisionChecker
+	public AssetSetter aSetter = new AssetSetter(this);				// object setUp
+	public UI ui = new UI(this);									// User InterFace(Screen Text,pick up Text, ..)
+	public Thread gameThread;										// Thread
 
 	// ENTITY AND OBJECT
-	public Player player = new Player(this, keyH);							// player
-	public SupperObject obj[] = new SupperObject[10];						// Objects, 갯수
-	public Entity npc[] = new Entity[10];									// NPC, 갯수
+	public Player player = new Player(this, keyH);					// player
+	public SuperObject obj[] = new SuperObject[10];				// Objects, 갯수
+	public Entity npc[] = new Entity[10];							// NPC, 갯수
 	
 	public GamePanel() {
 		
