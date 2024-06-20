@@ -1,0 +1,9 @@
+chapter 16
+
+	Custom Font
+	
+글꼴 변경
+	- game package에 폰트 파일을 추가한다.
+	- 폰트파일을 불러와 설정
+	- 폰트파일의 외각선 샤프 설정.
+	

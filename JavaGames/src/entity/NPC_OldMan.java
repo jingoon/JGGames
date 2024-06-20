@@ -31,7 +31,7 @@ public class NPC_OldMan extends Entity{
 		dialogues[2] = " 이름따윈 상관없어 어차피 너는 앞으로 쭈욱 계속 \n같은상태를 유지 할 거야";
 		dialogues[3] = " 사람들을 찾고 싶은가? 텔레포트 [F1]는 영원한 \n섬 에서만 사용할 수 있는 특별한 능력이지!";
 		dialogues[4] = " 오늘처럼 맑은 날에 사람들에게 말을 걸면 특별한 \n능력을 얻을 수 있을꺼야!";
-		dialogues[5] = " [ESC]키로 일시정지 시킬 수 있네";
+		dialogues[5] = " [ESC]키로 일시정지 시킬 수 있네..또한, \nex)온글잎 샘플 폰트가 적용되어 있습니다.";
 		
 	}
 	

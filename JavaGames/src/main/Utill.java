@@ -1,8 +1,12 @@
 package main;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 public class Utill {
@@ -22,7 +26,24 @@ public class Utill {
 		return false;
 	}
 	
-	// 시스템에 설치된 폰트 목록 출력
+	// 폰트 파일 load
+	public Font getFont(String path) {
+		
+		Font resultFont = null;
+		try {
+			InputStream is = getClass().getResourceAsStream(path);
+			resultFont = Font.createFont(Font.TRUETYPE_FONT, is);
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
+		return resultFont;
+		
+	}
+	
+	// local 시스템에 설치된 폰트 목록 출력
 	public void printFontStyle() {
 		String[] fontFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 		int i = 0;

@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 
@@ -15,8 +16,7 @@ public class UI {
 	
 	public GamePanel gp;
 	Graphics2D g2;
-	Font godic_40 = new Font("맑은 고딕", Font.PLAIN, 40);		// 프레임 마다 만들기때문에 필드에서 한번 만들고 계속 사용.
-	Font godic_80B = new Font("맑은 고딕", Font.BOLD, 80);
+	Font onglip;
 	public String message = "";
 	public Boolean messageOn = false;
 	public int messageTimer = 0;
@@ -26,7 +26,7 @@ public class UI {
 	public UI(GamePanel gp) {
 		this.gp = gp;
 		//Utill.printFontStyle();	// 시스템 폰트 List
-				
+		onglip = gp.utill.getFont("/font/온글잎 류뚱체.ttf");
 	}
 	
 	public void showMessage(String text) {
@@ -38,7 +38,8 @@ public class UI {
 		
 		this.g2 = g2;
 		
-		g2.setFont(godic_40);
+		g2.setFont(onglip);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);	// 글꼴 외각선 부드럽게
 		g2.setColor(Color.white);
 		
 		if(gp.gameState == gp.PLAYSTATE) {
@@ -55,7 +56,7 @@ public class UI {
 	// 일시정지 UI
 	public void drawPauseState() {
 		String text = "PAUSED";
-		g2.setFont(g2.getFont().deriveFont(80F));
+		g2.setFont(g2.getFont().deriveFont(100F));
 		int x = gp.utill.getXforCenteredText(text, g2);
 		int y = gp.screenHeight/2;
 		g2.drawString(text, x, y);
@@ -78,7 +79,7 @@ public class UI {
 		drawSubWindow(x,y,width,height,round);
 		
 		// 대화 Text
-		Font d = g2.getFont().deriveFont(Font.PLAIN,20f);
+		Font d = g2.getFont().deriveFont(Font.PLAIN,30f);
 		g2.setFont(d);
 		x += gp.tileSize;
 		y += gp.tileSize;
@@ -86,7 +87,7 @@ public class UI {
 
 		for(String line : text) {
 			g2.drawString(line, x, y);
-			y += gp.tileSize/2;				// 줄간격
+			y += gp.tileSize*3/4;				// 줄간격
 		}
 		
 		
