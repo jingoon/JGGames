@@ -20,12 +20,14 @@ public class KeyHandler implements KeyListener{
 	//final int PAUSED = KeyEvent.VK_ESCAPE;		// ESC 일시정지모드 전환
 	final int CANCEL = KeyEvent.VK_ESCAPE;		// 취소 (플레이모드전환)	
 	final int BGMONOFF = KeyEvent.VK_M;			// 배경음악 켬/끔
-	final int NEXT = KeyEvent.VK_SPACE;		// 대화창 열기/다음대화
+	final int NEXT = KeyEvent.VK_SPACE;			// 대화창 열기/다음대화
+	final int ENTER = KeyEvent.VK_ENTER;		// 선택
 	
 	public boolean blinkPress = false;
 	boolean drawTimePress = false; // check draw time
 	boolean bgmonoffPress = true; // BGM on/off
 	public boolean nextPress = false;
+	public boolean enterPress = false;
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
@@ -41,9 +43,17 @@ public class KeyHandler implements KeyListener{
 		
 		if(linerSearch(code, UP)) {
 			upPress = true;
+			if(gp.gameState == gp.TITLESTATE) {
+				gp.ui.titleMenuIndex--;
+				gp.ui.titleImageR();
+			}
 		}
 		if(linerSearch(code, DOWN)) {
 			downPress = true;
+			if(gp.gameState == gp.TITLESTATE) {
+				gp.ui.titleMenuIndex++;
+				gp.ui.titleImageR();
+			}
 		}
 		if(linerSearch(code, LEFT)) {
 			leftPress = true;
@@ -57,6 +67,10 @@ public class KeyHandler implements KeyListener{
 		if(linerSearch(code, NEXT)) {
 			nextPress = true;
 		}
+		if(linerSearch(code, ENTER)) {
+			enterPress = true;
+			enterEffect();
+		}
 		
 		drawTimePress = keySwitch(code, DRAWTIME, drawTimePress );
 		bgmonoffPress = keySwitch(code, BGMONOFF, bgmonoffPress );
@@ -65,6 +79,26 @@ public class KeyHandler implements KeyListener{
 		
 		
 		
+		
+	}
+
+	private void enterEffect() {
+		if(gp.gameState == gp.TITLESTATE) {
+			if(gp.ui.subTitleState == gp.ui.MENUSCREEN) {
+				// 메뉴 선택
+				gp.ui.subTitleState = gp.ui.titleMenuIndex+1;
+				
+				if(gp.ui.subTitleState == gp.ui.PLAYSCREEN) {
+					gp.gameState = gp.PLAYSTATE;
+				}else if(gp.ui.subTitleState == gp.ui.EXITSCREEN) {
+					System.exit(0);
+				}
+			}else if(gp.ui.subTitleState == gp.ui.CHARECTERSCREEN) {
+				// 케릭터 선택화면
+			}else if(gp.ui.subTitleState == gp.ui.OPTIONSCREEN) {
+				//옵션 화면
+			}
+		}
 		
 	}
 
@@ -89,6 +123,9 @@ public class KeyHandler implements KeyListener{
 		}
 		if(linerSearch(code, NEXT)) {
 			nextPress = false;
+		}
+		if(linerSearch(code, ENTER)) {
+			enterPress = false;
 		}
 		
 		
@@ -138,7 +175,7 @@ public class KeyHandler implements KeyListener{
 	}
 	
 	// 일시정지 or 플레이
-	public void changeMode(int code) {
+	private void changeMode(int code) {
 
 		if(code == CANCEL) {
 			if(gp.gameState == gp.PLAYSTATE) {

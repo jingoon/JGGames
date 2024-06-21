@@ -65,12 +65,13 @@ public class Utill {
 		g2.dispose();
 		return scaledImage;
 	}
-	
+	// 글자길이
+	public int getTextLenth(String text, Graphics2D g2) {
+		return (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+	}
 	// 텍스트 가운데 맞춤
-	public int getXforCenteredText(String txet, Graphics2D g2) {
-		
-		// 글자길이
-		int lenth = (int)g2.getFontMetrics().getStringBounds(txet, g2).getWidth();
+	public int getXforCenteredText(String text, Graphics2D g2) {
+		int lenth = getTextLenth(text, g2);
 		// 화면 중앙 에서 글자길이의 반만큼 좌측, 즉 글자의 x축 중앙과 화면의 x축 중앙을 일치시킴
 		int x = gp.screenWidth/2 - lenth/2; 
 		return x;

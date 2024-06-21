@@ -1,0 +1,26 @@
+chapter 17
+
+	Title Screen
+	
+ 타이틀 화면 만들기
+ 
+ 1. 타이틀 메뉴 & 화면 만들기 
+ 	- 옵션, 새게임, 로드, 종료 등
+ 	- 방향키 이동, 엔터 선택
+ 	
+ 		
+ 2. 서브 타이틀 추가
+ 	- 메뉴 선택시 하부 선택메뉴 .
+ 	- 뒤로가기 추가
+ 	
+ -- 
+ 	gamePanel.class
+ 		- gameState로 titleState 추가 
+	ui.class
+		- titleState에 따른 화면 분기
+			- 하부 분기 추가. state를 int 형으로 추가
+		- 각 화면구성
+		- 방향키로 움직이는 기준 변수 추가 , selectCount
+	keyHandler.class
+		- ui selectCount에 따른 분기로 gameStates 변경, 
+		- 각 gameStates에 따라 키 분기? .. 고민 

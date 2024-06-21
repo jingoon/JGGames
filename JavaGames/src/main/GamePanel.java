@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	// GAME MODE
 	public int gameState;
+	public final int TITLESTATE = 0;
 	public final int PLAYSTATE = 1;
 	public final int PAUSESTATE = 2;
 	public final int DIALOGUESTATE = 3;
@@ -61,9 +62,6 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
-		
-		this.setName("name");
-		
 		// keyboard press
 		this.addKeyListener(keyH);
 		this.setFocusable(true); // with this, this GamePanel can be "focused" to receive key input
@@ -76,7 +74,8 @@ public class GamePanel extends JPanel implements Runnable{
 		playMusic();					// BGM start
 		aSetter.setObject(); 			// objects setting
 		aSetter.setNpc(); 				// NPC setting
-		gameState = PLAYSTATE;			// gameMode
+		gameState = TITLESTATE;			// start gameMode
+		ui.setUiImage();
 	}
 	
 	public void playMusic() {
@@ -138,6 +137,9 @@ public class GamePanel extends JPanel implements Runnable{
 	public void update() {
 		
 		switch(gameState) {
+			case TITLESTATE:
+				
+				break;
 			case PLAYSTATE:
 				// 플레이어
 				player.update();
@@ -153,6 +155,10 @@ public class GamePanel extends JPanel implements Runnable{
 			case PAUSESTATE:
 				
 				break;
+			case DIALOGUESTATE:
+				
+				break;
+			
 		}
 		
 		
@@ -168,31 +174,30 @@ public class GamePanel extends JPanel implements Runnable{
 		// 디버그
 		long drawStart = System.nanoTime();		
 		
-		// 타일 드로우
-		tileM.draw(g2);		
-		
-		// 오브젝트(아이템, 문, 상자 등) 드로우
-		for(int i = 0; i < obj.length; i++ ) {
-			if(obj[i]== null) {
-				continue;
+		// 타이틀 상태에서는 바닥, 오브젝트, 엔피시, 플레이어를 그리지 않는다.
+		if(gameState != TITLESTATE) {
+			// 타일 드로우
+			tileM.draw(g2);		
+			// 오브젝트(아이템, 문, 상자 등) 드로우
+			for(int i = 0; i < obj.length; i++ ) {
+				if(obj[i]== null) {
+					continue;
+				}
+				obj[i].draw(g2, this);
 			}
-			obj[i].draw(g2, this);
-		}
-		
-		// 엔피씨 드로우
-		for(int i = 0; i < npc.length; i++ ) {
-			if(npc[i]== null) {
-				continue;
+			// 엔피씨 드로우
+			for(int i = 0; i < npc.length; i++ ) {
+				if(npc[i]== null) {
+					continue;
+				}
+				npc[i].draw(g2);
 			}
-			npc[i].draw(g2);
+			// 케릭터 드로우
+			player.draw(g2);
 		}
-		
-		// 케릭터 드로우
-		player.draw(g2);
 		
 		// 화면 UI, 텍스트
-		ui.draw(g2);
-		
+		ui.draw(g2);	// ui는 draw메서드 안에서 gameState에 따른 분기를 이미 함.
 		// 디버그
 		if(keyH.drawTimePress) {
 			long drawEnd = System.nanoTime();
