@@ -66,10 +66,15 @@ public class KeyHandler implements KeyListener{
 		}
 		if(linerSearch(code, NEXT)) {
 			nextPress = true;
+			if(gp.gameState == gp.TITLESTATE) {
+				menuSelectEffect();
+			}
 		}
 		if(linerSearch(code, ENTER)) {
 			enterPress = true;
-			enterEffect();
+			if(gp.gameState == gp.TITLESTATE) {
+				menuSelectEffect();
+			}
 		}
 		
 		drawTimePress = keySwitch(code, DRAWTIME, drawTimePress );
@@ -82,21 +87,42 @@ public class KeyHandler implements KeyListener{
 		
 	}
 
-	private void enterEffect() {
+	private void menuSelectEffect() {
 		if(gp.gameState == gp.TITLESTATE) {
+			// 메뉴 선택
 			if(gp.ui.subTitleState == gp.ui.MENUSCREEN) {
-				// 메뉴 선택
 				gp.ui.subTitleState = gp.ui.titleMenuIndex+1;
-				
+				// 플레이
 				if(gp.ui.subTitleState == gp.ui.PLAYSCREEN) {
 					gp.gameState = gp.PLAYSTATE;
-				}else if(gp.ui.subTitleState == gp.ui.EXITSCREEN) {
+				}
+				// 종료
+				if(gp.ui.subTitleState == gp.ui.EXITSCREEN) {
 					System.exit(0);
 				}
-			}else if(gp.ui.subTitleState == gp.ui.CHARECTERSCREEN) {
+			}else if(gp.ui.subTitleState == gp.ui.CHARACTERSCREEN) {
 				// 케릭터 선택화면
+				String message = gp.ui.menuList[gp.ui.titleMenuIndex];
+				message += "를 선택하였습니다.";
+				if(gp.ui.titleMenuIndex == 0) {	
+					// 전사
+					gp.gameState = gp.PLAYSTATE;
+				}else if(gp.ui.titleMenuIndex == 1) {
+					// 궁수
+					gp.gameState = gp.PLAYSTATE;
+				}else if(gp.ui.titleMenuIndex == 2) {
+					// 마법사
+					gp.gameState = gp.PLAYSTATE;
+				}else if(gp.ui.titleMenuIndex == 3) {
+					// back
+					gp.ui.titleMenuIndex = 0;
+					gp.ui.subTitleState = gp.ui.MENUSCREEN;
+				}
+				System.out.println(message);
 			}else if(gp.ui.subTitleState == gp.ui.OPTIONSCREEN) {
-				//옵션 화면
+				//옵션 화면, only back
+				gp.ui.titleMenuIndex = 0;
+				gp.ui.subTitleState = gp.ui.MENUSCREEN;
 			}
 		}
 		

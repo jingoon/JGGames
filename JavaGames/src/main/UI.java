@@ -34,7 +34,7 @@ public class UI {
 	public String[] menuList;
 	public int subTitleState = 0; // 타이틀 화면,
 	public final int MENUSCREEN = 0;
-	public final int CHARECTERSCREEN = 1;
+	public final int CHARACTERSCREEN = 1;
 	public final int PLAYSCREEN = 2;
 	public final int OPTIONSCREEN = 3;
 	public final int EXITSCREEN = 4;
@@ -75,14 +75,109 @@ public class UI {
 		
 		if(subTitleState == MENUSCREEN) {
 			drawMenu();
-		}else if(subTitleState == CHARECTERSCREEN) {
-			
+		}else if(subTitleState == CHARACTERSCREEN) {
+			drawClass();
 		}else if (subTitleState == OPTIONSCREEN) {
-			
+			drawOption();
 		}
-
 		
 	}
+	// 옵션 목록
+	private void drawOption() {
+		int x, y;
+		String menu = "";
+		
+		menu = "옵션";
+		g2.setFont(g2.getFont().deriveFont(70F));
+		x = gp.utill.getXforCenteredText(menu, g2);
+		y = gp.tileSize * 2;
+		// 제목 그림자
+		g2.setColor(Color.gray);
+		g2.drawString(menu, x+3, y+3);
+		// 제목 
+		g2.setColor(Color.white);
+		g2.drawString(menu, x, y);
+		
+		menuList = new String[7];
+		menuList[0] = "[ESC] : 일시정지, 취소";
+		menuList[1] = "[SPACE] : 선택, 대화, 다음";
+		menuList[2] = "[ENTER] : 선택";
+		menuList[3] = "[w] : 위로";
+		menuList[4] = "[s] : 아래로";
+		menuList[5] = "[F1] : 텔레포트";
+		menuList[6] = "뒤로가기";
+		y += gp.tileSize * 1;
+		int lineSpace = (int) (gp.tileSize * 1.2);
+		int menuIndex = 0;
+		if(titleMenuIndex >= menuList.length) {
+			titleMenuIndex = 0;
+		}else if(titleMenuIndex < 0) {
+			titleMenuIndex = menuList.length -1;
+		}
+		for(String menuT : menuList) {
+			g2.setFont(g2.getFont().deriveFont(50F));
+			x = gp.tileSize * 2;
+			y += lineSpace;
+			g2.setColor(Color.white);
+			if(menuIndex == menuList.length -1) {
+				// 마지막 메뉴 위치
+				x =gp.screenWidth - (gp.tileSize * 4);
+				g2.setColor(Color.yellow);
+			}
+			g2.drawString(menuT, x, y);
+			menuIndex++;
+		}
+		// 랜덤 이미지
+		g2.drawImage(pcImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
+	}
+	// 케릭터 목록
+	private void drawClass() {
+		int x, y;
+		String menu = "";
+		
+		menu = "직업을 선택하세요!";
+		g2.setFont(g2.getFont().deriveFont(70F));
+		x = gp.utill.getXforCenteredText(menu, g2);
+		y = gp.tileSize * 3;
+		// 제목 그림자
+		g2.setColor(Color.gray);
+		g2.drawString(menu, x+3, y+3);
+		// 제목 
+		g2.setColor(Color.white);
+		g2.drawString(menu, x, y);
+		
+		menuList = new String[4];
+		menuList[0] = "전사";
+		menuList[1] = "궁수";
+		menuList[2] = "마법사";
+		menuList[3] = "뒤로가기";
+		y += gp.tileSize * 2;
+		int lineSpace = (int) (gp.tileSize * 1.2);
+		int menuIndex =0;
+		if(titleMenuIndex >= menuList.length) {
+			titleMenuIndex = 0;
+		}else if(titleMenuIndex < 0) {
+			titleMenuIndex = menuList.length -1;
+		}
+		for(String menuT : menuList) {
+			g2.setFont(g2.getFont().deriveFont(50F));
+			x = gp.utill.getXforCenteredText(menuT, g2);
+			y += lineSpace;
+			if(menuIndex==3) {
+				y += lineSpace;
+			}
+			g2.setColor(Color.white);
+			if(menuIndex == titleMenuIndex) {
+				// 메뉴 textColor
+				g2.setColor(Color.yellow);
+			}
+			g2.drawString(menuT, x, y);
+			menuIndex++;
+		}
+		// 랜덤 이미지
+		g2.drawImage(pcImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
+	}
+	
 	// 메뉴 목록
 	private void drawMenu() {
 		int x, y;
@@ -100,10 +195,10 @@ public class UI {
 		g2.drawString(menu, x, y);
 		
 		menuList = new String[4];
-		menuList[0] = "NEW GAME";
-		menuList[1] = "PLAY";
-		menuList[2] = "OPTION";
-		menuList[3] = "EXIT";
+		menuList[0] = "새게임";
+		menuList[1] = "플레이";
+		menuList[2] = "옵션";
+		menuList[3] = "종료";
 		y += gp.tileSize * 2;
 		int lineSpace = (int) (gp.tileSize * 1.5);
 		int menuIndex =0;
@@ -124,7 +219,7 @@ public class UI {
 			g2.drawString(menuT, x, y);
 			menuIndex++;
 		}
-		// 케릭터 이미지
+		// 랜덤 이미지
 		g2.drawImage(pcImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
 	}
 	// 플레이 UI
@@ -163,8 +258,6 @@ public class UI {
 			g2.drawString(line, x, y);
 			y += gp.tileSize*0.75;				// 줄간격
 		}
-		
-		
 	}
 	
 	// 보조 창 그리기
