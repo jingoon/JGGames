@@ -17,11 +17,9 @@ public class KeyHandler implements KeyListener{
 	// 특수키
 	final int BLINK = KeyEvent.VK_F1;			// blink 
 	final int DRAWTIME[] = {KeyEvent.VK_T};		// 그리기 시간 화면표시(성능)
-	//final int PAUSED = KeyEvent.VK_ESCAPE;		// ESC 일시정지모드 전환
-	final int CANCEL = KeyEvent.VK_ESCAPE;		// 취소 (플레이모드전환)	
+	final int CANCEL = KeyEvent.VK_ESCAPE;		// ESC, 취소 (일시정지모드or플레이모드전환)	
 	final int BGMONOFF = KeyEvent.VK_M;			// 배경음악 켬/끔
-	final int NEXT = KeyEvent.VK_SPACE;			// 대화창 열기/다음대화
-	final int ENTER = KeyEvent.VK_ENTER;		// 선택
+	final int NEXT[] = {KeyEvent.VK_SPACE, KeyEvent.VK_ENTER};			// 선택, 대화 
 	
 	public boolean blinkPress = false;
 	boolean drawTimePress = false; // check draw time
@@ -66,12 +64,6 @@ public class KeyHandler implements KeyListener{
 		}
 		if(linerSearch(code, NEXT)) {
 			nextPress = true;
-			if(gp.gameState == gp.TITLESTATE) {
-				menuSelectEffect();
-			}
-		}
-		if(linerSearch(code, ENTER)) {
-			enterPress = true;
 			if(gp.gameState == gp.TITLESTATE) {
 				menuSelectEffect();
 			}
@@ -150,10 +142,6 @@ public class KeyHandler implements KeyListener{
 		if(linerSearch(code, NEXT)) {
 			nextPress = false;
 		}
-		if(linerSearch(code, ENTER)) {
-			enterPress = false;
-		}
-		
 		
 	}
 	
@@ -212,7 +200,7 @@ public class KeyHandler implements KeyListener{
 				gp.gameState = gp.PLAYSTATE;
 			}
 		}
-		if(code == NEXT) {
+		if(linerSearch(code, NEXT)) {
 			if (gp.gameState == gp.DIALOGUESTATE) {
 				gp.gameState = gp.PLAYSTATE;
 			}

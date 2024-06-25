@@ -4,14 +4,12 @@ import main.GamePanel;
 
 public class OBJ_Door extends SuperObject{
 	
-	GamePanel gp;
-
 	public OBJ_Door(GamePanel gp) {
 
-		this.gp = gp;
+		super(gp);
 		name = "Door";
 		collision = true;
-		setup(name.toLowerCase(), gp);
+		image = gp.utill.setupImage("/objects/door");
 
 	}
 }

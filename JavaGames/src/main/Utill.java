@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
 public class Utill {
 	GamePanel gp;
 	
@@ -57,6 +59,20 @@ public class Utill {
         }
 	}
 	
+	// 이미지 셋업
+	public BufferedImage setupImage(String pathName) {
+		
+		BufferedImage image = null;
+		
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream(pathName+".png"));
+			image = gp.utill.scaleImage(image, gp.tileSize, gp.tileSize);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return image;
+	}
 	// 이미지 렌더링
 	public BufferedImage scaleImage(BufferedImage originalImage, int width, int height) {
 		BufferedImage scaledImage = new BufferedImage(width, height, originalImage.getType());
@@ -65,16 +81,17 @@ public class Utill {
 		g2.dispose();
 		return scaledImage;
 	}
-	// 글자길이
-	public int getTextLenth(String text, Graphics2D g2) {
-		return (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-	}
+	
 	// 텍스트 가운데 맞춤
 	public int getXforCenteredText(String text, Graphics2D g2) {
 		int lenth = getTextLenth(text, g2);
 		// 화면 중앙 에서 글자길이의 반만큼 좌측, 즉 글자의 x축 중앙과 화면의 x축 중앙을 일치시킴
 		int x = gp.screenWidth/2 - lenth/2; 
 		return x;
+	}
+	// 글자길이
+	public int getTextLenth(String text, Graphics2D g2) {
+		return (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 	}
 	
 	// 지도 랜덤위치 x

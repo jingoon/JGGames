@@ -36,10 +36,15 @@ public class Player extends Entity{
 		
 		setDefaultValues();
 		getPlayerImage();
+		setHp();
 		
 		//test
 		blink = new Blink(this);
 				
+	}
+	
+	public void setHp() {
+		hp = 6;
 	}
 	
 	public void setDefaultValues() {
@@ -50,18 +55,22 @@ public class Player extends Entity{
 		speed = 4;
 		direction = "down";
 		moveChangeSpeed = 12;
+		
+		// 플레이어 status
+		maxHp = 6;
+		hp = maxHp;
 
 	}
 	
 	public void getPlayerImage() {
-		up1 = setupImage("/player/boy_up_1");
-		up2 = setupImage("/player/boy_up_2");
-		down1 = setupImage("/player/boy_down_1");
-		down2 = setupImage("/player/boy_down_2");
-		right1 = setupImage("/player/boy_right_1");
-		right2 = setupImage("/player/boy_right_2");
-		left1 = setupImage("/player/boy_left_1");
-		left2 = setupImage("/player/boy_left_2");
+		up1 = gp.utill.setupImage("/player/boy_up_1");
+		up2 = gp.utill.setupImage("/player/boy_up_2");
+		down1 = gp.utill.setupImage("/player/boy_down_1");
+		down2 = gp.utill.setupImage("/player/boy_down_2");
+		right1 = gp.utill.setupImage("/player/boy_right_1");
+		right2 = gp.utill.setupImage("/player/boy_right_2");
+		left1 = gp.utill.setupImage("/player/boy_left_1");
+		left2 = gp.utill.setupImage("/player/boy_left_2");
 				
 	}
 	
@@ -106,7 +115,7 @@ public class Player extends Entity{
 	// object collision effect 오브젝트 충돌 효과 
 	public void pickUpObject(int i) {
 		
-		if(i != 999) {	
+		if(i != 999) {
 
 		}
 	}

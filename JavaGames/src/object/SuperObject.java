@@ -3,15 +3,13 @@ package object;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import main.GamePanel;
 
 public class SuperObject {
 	
-	public BufferedImage image;
+	public GamePanel gp;
+	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;
@@ -19,18 +17,13 @@ public class SuperObject {
 	public int solidAreaDefaultX = 0;
 	public int solidAreaDefaultY = 0;
 	
+	public SuperObject(GamePanel gp) {
+		this.gp = gp;
+	}
+	
 	public void update(int x, int y) {
 		worldX = x;
 		worldY = y;
-	}
-	
-	public void setup(String pathName, GamePanel gp) {
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/objects/"+name+".png"));
-			image = gp.utill.scaleImage(image, gp.tileSize, gp.tileSize);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void draw(Graphics2D g2, GamePanel gp) {

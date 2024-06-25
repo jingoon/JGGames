@@ -4,13 +4,11 @@ import main.GamePanel;
 
 public class OBJ_Key extends SuperObject{
 	
-	GamePanel gp;
-
 	public OBJ_Key(GamePanel gp) {
 		
-		this.gp = gp;
+		super(gp);
 		name = "Key";
-		setup(name.toLowerCase(), gp);
+		image = gp.utill.setupImage("/objects/key");
 
 	}
 }

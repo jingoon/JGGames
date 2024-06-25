@@ -4,13 +4,11 @@ import main.GamePanel;
 
 public class OBJ_Boots extends SuperObject{
 	
-	GamePanel gp;
-
 	public OBJ_Boots(GamePanel gp) {
 		
-		this.gp = gp;
+		super(gp);
 		name = "Boots";
-		setup(name.toLowerCase(), gp);
+		image = gp.utill.setupImage("/objects/boots");
 
 	}
 }

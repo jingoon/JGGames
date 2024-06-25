@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.border.StrokeBorder;
 
 import entity.Entity;
+import object.OBJ_Heart;
 import object.OBJ_Key;
 import object.SuperObject;
 
@@ -21,29 +22,36 @@ public class UI {
 	public GamePanel gp;
 	Graphics2D g2;
 	Font onglip;
-	BufferedImage pcImage;
+	// 렌덤 이미지 
+	BufferedImage allImage;
 	List<BufferedImage> images;
 	public int imageX = 0;
 	public int imageY = 0;
+	// 화면 메시지 출력
 	public String message = "";
 	public Boolean messageOn = false;
 	public int messageTimer = 0;
 	public boolean gameFinished = false;
+	// 엔피씨 대화
 	public String currentDialogue = "";
-	public int titleMenuIndex = 0;
-	public String[] menuList;
-	public int subTitleState = 0; // 타이틀 화면,
-	public final int MENUSCREEN = 0;
-	public final int CHARACTERSCREEN = 1;
-	public final int PLAYSCREEN = 2;
-	public final int OPTIONSCREEN = 3;
-	public final int EXITSCREEN = 4;
+	// 타이틀 UI
+	public int subTitleState = 0; 	// 타이틀 화면
+	public int titleMenuIndex = 0;	// 메뉴이동
+	public String[] menuList;		// 메뉴 
+	// 서브 타이틀 UI 상수
+	public final int MENUSCREEN = 0;		// 타이틀 UI
+	public final int CHARACTERSCREEN = 1;	// 새게임
+	public final int PLAYSCREEN = 2;		// 플레이
+	public final int OPTIONSCREEN = 3;		// 옵션
+	public final int EXITSCREEN = 4;		// 종료
+	// 플레이어 status
+	private BufferedImage heart_full, heart_half, heart_blank;
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
 		//Utill.printFontStyle();	// 시스템 폰트 List
 		onglip = gp.utill.getFont("/font/온글잎 류뚱체.ttf");
-		
+		setheart();			// 하트 이미지
 	}
 	
 	public void showMessage(String text) {
@@ -59,19 +67,55 @@ public class UI {
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);	// 글꼴 외각선 부드럽게
 		g2.setColor(Color.white);
 		
-		if(gp.gameState == gp.TITLESTATE) {
-			drawTitleState();
-		}else if(gp.gameState == gp.PLAYSTATE) {
-			drawPlayState();
+		if(gp.gameState == gp.PLAYSTATE) {
+			// 플레이 UI
+			drawPlayerHp();								// 플레이어 HP
+		}else if(gp.gameState == gp.TITLESTATE) {
+			drawTitleScreen();							// 타이틀 화면 UI
 		}else if(gp.gameState == gp.PAUSESTATE) {
-			drawPauseState();
+			drawPlayerHp();								// 플레이어 HP
+			drawPauseScreen();							// 일시정지 UI
 		}else if(gp.gameState == gp.DIALOGUESTATE) {
-			drawDialogueScreen();
+			drawPlayerHp();								// 플레이어 HP
+			drawDialogueScreen();						// 대화 UI
+		}
+		
+	}
+	// hp 하트 이미지 세팅
+	private void setheart() {
+		SuperObject heart = new OBJ_Heart(gp);
+		heart_blank = heart.image;
+		heart_half = heart.image2;
+		heart_full = heart.image3;
+	}
+	// 플레이어 hp
+	private void drawPlayerHp() {
+		int hp = gp.player.hp;
+		int maxHp = gp.player.maxHp;
+		int fullHp = hp/2;
+		int halfHp = hp%2;
+		
+		int x, y;
+		x = gp.tileSize/2;
+		y = gp.tileSize/2;
+		
+		// 빈하트
+		for(int i=0; i<maxHp/2;i++) {
+			if(i<fullHp) {
+				// 풀하트 
+				g2.drawImage(heart_full, x + (i*gp.tileSize), y, null);
+			}else if(i<fullHp+halfHp) {
+				// 하프하트
+				g2.drawImage(heart_half, x + (i*gp.tileSize), y, null);
+			}else {
+				// 빈하트
+				g2.drawImage(heart_blank, x + (i*gp.tileSize), y, null);
+			}
 		}
 		
 	}
 	// 타이틀 화면 UI
-	private void drawTitleState() {
+	private void drawTitleScreen() {
 		
 		if(subTitleState == MENUSCREEN) {
 			drawMenu();
@@ -101,7 +145,7 @@ public class UI {
 		menuList = new String[7];
 		menuList[0] = "[ESC] : 일시정지, 취소";
 		menuList[1] = "[SPACE] : 선택, 대화, 다음";
-		menuList[2] = "[ENTER] : 선택";
+		menuList[2] = "[m] : 배경음악 on/off";
 		menuList[3] = "[w] : 위로";
 		menuList[4] = "[s] : 아래로";
 		menuList[5] = "[F1] : 텔레포트";
@@ -128,7 +172,7 @@ public class UI {
 			menuIndex++;
 		}
 		// 랜덤 이미지
-		g2.drawImage(pcImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
+		g2.drawImage(allImage, imageX, imageY, null);
 	}
 	// 케릭터 목록
 	private void drawClass() {
@@ -175,7 +219,7 @@ public class UI {
 			menuIndex++;
 		}
 		// 랜덤 이미지
-		g2.drawImage(pcImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
+		g2.drawImage(allImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
 	}
 	
 	// 메뉴 목록
@@ -220,14 +264,10 @@ public class UI {
 			menuIndex++;
 		}
 		// 랜덤 이미지
-		g2.drawImage(pcImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
-	}
-	// 플레이 UI
-	private void drawPlayState() {
-		
+		g2.drawImage(allImage, imageX, imageY, gp.tileSize*2, gp.tileSize*2, null);
 	}
 	// 일시정지 UI
-	private void drawPauseState() {
+	private void drawPauseScreen() {
 		String text = "PAUSED";
 		g2.setFont(g2.getFont().deriveFont(100F));
 		int x = gp.utill.getXforCenteredText(text, g2);
@@ -278,9 +318,9 @@ public class UI {
 		int randomNum = gp.utill.getRandomPoint(100)+1;
 		randomNum %= images.size();
 		
-		pcImage = images.get(randomNum);
+		allImage = images.get(randomNum);
 	}
-	
+	// all 이미지 세팅, 타이틀 화면에 사용.
 	public void setUiImage() {
 		images = new ArrayList<>();
 		images.add(gp.player.down1);

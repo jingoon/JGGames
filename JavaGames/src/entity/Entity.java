@@ -3,10 +3,6 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import main.GamePanel;
 
 public class Entity {
@@ -38,25 +34,14 @@ public class Entity {
 	public String[] dialogues = new String[20];			// 대화 배열
 	public int dialoguesIndex;							// 대화 인덱스
 	
+	// hp (플레이어, 몬스터) status
+	public int maxHp = 6;
+	public int hp = 6;
+	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 		direction = "down";
 		solidArea = new Rectangle(gp.tileSize, gp.tileSize);
-	}
-	
-	// 이미지 셋업
-	public BufferedImage setupImage(String pathName) {
-		
-		BufferedImage image = null;
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream(pathName+".png"));
-			image = gp.utill.scaleImage(image, gp.tileSize, gp.tileSize);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return image;
 	}
 	
 	// 기본행동

@@ -3,14 +3,12 @@ package object;
 import main.GamePanel;
 
 public class OBJ_Chest extends SuperObject{
-	
-	GamePanel gp;
 
 	public OBJ_Chest(GamePanel gp) {
 
-		this.gp = gp;
+		super(gp);
 		name = "Chest";
-		setup(name.toLowerCase(), gp);
+		image = gp.utill.setupImage("/objects/chest");
 		
 	}
 }
