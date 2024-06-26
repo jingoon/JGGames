@@ -79,6 +79,9 @@ public class Player extends Entity{
 		if(keyH.blinkPress) {
 			blink.start();
 		}
+		if(keyH.f2Press) {
+			gp.utill.getPlayerPosition();
+		}
 		
 		// movekey를 눌러야지만 움직임. 
 		if(gp.utill.moveKeyPress(keyH)) {
@@ -107,6 +110,9 @@ public class Player extends Entity{
 			
 			// IF COLLISION IS FALSE. PLAYER CAN MOVE
 			moveToCollision();
+			
+			// Event
+			gp.eventH.checkEvent();
 		
 		}
 				

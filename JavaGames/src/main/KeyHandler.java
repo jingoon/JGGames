@@ -20,12 +20,14 @@ public class KeyHandler implements KeyListener{
 	final int CANCEL = KeyEvent.VK_ESCAPE;		// ESC, 취소 (일시정지모드or플레이모드전환)	
 	final int BGMONOFF = KeyEvent.VK_M;			// 배경음악 켬/끔
 	final int NEXT[] = {KeyEvent.VK_SPACE, KeyEvent.VK_ENTER};			// 선택, 대화 
+	final int F2 = KeyEvent.VK_F2;
 	
 	public boolean blinkPress = false;
 	boolean drawTimePress = false; // check draw time
 	boolean bgmonoffPress = true; // BGM on/off
 	public boolean nextPress = false;
 	public boolean enterPress = false;
+	public boolean f2Press = false;
 	
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
@@ -61,6 +63,9 @@ public class KeyHandler implements KeyListener{
 		}
 		if(linerSearch(code, BLINK)) {
 			blinkPress = true;
+		}
+		if(linerSearch(code, F2)) {
+			f2Press = true;
 		}
 		if(linerSearch(code, NEXT)) {
 			nextPress = true;
@@ -141,6 +146,9 @@ public class KeyHandler implements KeyListener{
 		}
 		if(linerSearch(code, NEXT)) {
 			nextPress = false;
+		}
+		if(linerSearch(code, F2)) {
+			f2Press = false;
 		}
 		
 	}

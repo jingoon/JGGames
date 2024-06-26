@@ -1,0 +1,26 @@
+chapter 19
+
+	Event
+	
+- 오브젝트를 배치하지 않고, 위치를 특정하여 이벤트를 발생 시킨다. 
+- 데미지 타일, 이동 타일
+- 힐링 풀
+
+	- dialogue가 나오면서 이벤트 작동.
+	
+1. EventHandler.class 생성
+	- GamePanel 에서 인스턴스화
+	- 충돌영역 생성
+		- 2x2, tile의 가운데(23, 23)
+		- 디폴트x,y를 선언하여 초기화 대비.
+	- checkEvent() 생성
+	- boolean hit() 생성 
+		- 충돌 확인.
+		- 충돌 한다면.  hit = true
+		- 충돌영역의 위치 
+			- wordlx + solidAreaX 
+			- worldx로 월드맵에서의 타일 위치를 특정
+			- solidAreaX로 타일위 충돌영역의 위치를 특정
+			- rectangle 객체로 충돌(겹침)을 확인
+		- 인수로 x, y, 방향 필요
+		

@@ -100,4 +100,14 @@ public class Utill {
 		int x = r.nextInt(maximum);
 		return x;
 	}
+	
+	// 현위치 
+	public void getPlayerPosition() {
+		int pX = gp.player.worldX + gp.tileSize/2;
+		int pY = gp.player.worldY + gp.tileSize/2;
+		int pCol = pX/gp.tileSize;
+		int pRow = pY/gp.tileSize;
+		gp.gameState = gp.DIALOGUESTATE;
+		gp.ui.currentDialogue ="현 위치는 "+ pX+", "+pY+" : "+pCol+", "+pRow;
+	}
 }
